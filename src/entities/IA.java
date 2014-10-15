@@ -10,6 +10,7 @@ package entities;
 public class IA extends GameEntity
 {
 	private int diffLvl; //niveau de difficulte
+	//test git
 	
 	public IA(int lvl)
 	{
