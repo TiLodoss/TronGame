@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
+import other.Const;
+
 /**
  * Classe Tile
  * @author Yannis M'RAD, Vincent AUNAI
@@ -13,7 +15,6 @@ import javax.swing.JPanel;
  *
  */
 public class Tile {
-	private Rectangle rectangle;
 	private Color color;
 	private JPanel panel;
 	private int owner; // joueur/ia ayant colore la tuile (ou non)
@@ -24,29 +25,34 @@ public class Tile {
 	 * @param rectangle
 	 * @param color
 	 */
-	public Tile(JPanel panel, Rectangle rectangle, Color color)
+	public Tile(int x, int y, JPanel panel, Color color)
 	{
 		this.panel = panel;
-		this.rectangle = rectangle;
 		this.color = color;
-		this.owner = -1;
+		this.panel.setBackground(color);
+		this.owner = Const.C_NONE; //pas de propriétaire par défaut
 	}
 	
 	/**
 	 * Constructeur de Tile
+	 * @param x
+	 * @param y
 	 * @param panel
 	 */
 	public Tile(int x, int y, JPanel panel)
 	{
 		this.panel = panel;
+		this.owner = Const.C_NONE;
 	}
-
-	public Rectangle getRectangle() {
-		return rectangle;
-	}
-
-	public void setRectangle(Rectangle rectangle) {
-		this.rectangle = rectangle;
+	
+	/**
+	 * Methode pour colorer la tuile avec une couleur donnee
+	 * @param color
+	 */
+	public void paintPanel(Color color)
+	{
+		this.panel.setBackground(color);
+		this.setColor(color);
 	}
 
 	public Color getColor() {
@@ -55,7 +61,6 @@ public class Tile {
 
 	public void setColor(Color color) {
 		this.color = color;
-		this.panel.setBackground(color);
 	}
 
 	public JPanel getPanel() {

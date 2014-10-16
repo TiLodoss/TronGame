@@ -57,9 +57,7 @@ public class GamePanel extends JPanel{
 		for(int i=0;i<size;i++)
 		{
 			for(int j=0;j<size;j++)
-			{
-				Rectangle rect = new Rectangle(5,5);
-				
+			{	
 				//On cree des JPanels pour représenter les tuiles de la carte
 				JPanel tilePanel = new JPanel();
 				tilePanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -70,9 +68,22 @@ public class GamePanel extends JPanel{
 			}
 		}
 		
-		paintTile(0,10, 0);
-		paintTile(0,50, 0);
-		paintTile(0,20, 0);
+		//Test
+		try
+		{
+			paintTile(0,10, 0);
+			paintTile(1,10, 0);
+			paintTile(2,10, 0);
+			paintTile(3,10, 0);
+			paintTile(4,10, 0);
+			paintTile(0,50, 1);
+			paintTile(0,20, 3);
+		}
+		
+		catch(GameException e)
+		{
+			System.out.println(e.getMessage());
+		}
 		
 	}
 	
@@ -80,38 +91,47 @@ public class GamePanel extends JPanel{
 	 * Methode pour changer la couleur d'une tuile
 	 * @param x
 	 * @param y
-	 * @param color
+	 * @param ownerColor
 	 * @throws GameException
 	 */
-	public void paintTile(int x, int y, int color)
+	public void paintTile(int x, int y, int ownerColor) throws GameException
 	{
-		switch(color)
+		//Ne colorier que les cases vides
+		if(tiles[x][y].getOwner() == Const.C_NONE)
 		{
-		//TODO
-			case Const.C_PLAYER:
-				if(tiles[x][y].getOwner() == Const.C_NONE);
-				{
-					tiles[x][y].setOwner(Const.C_PLAYER);
-					tiles[x][y].setColor(Color.red);
-				}
-				break;
+			switch(ownerColor)
+			{
+				case Const.C_PLAYER:
+						tiles[x][y].setOwner(Const.C_PLAYER);
+						tiles[x][y].paintPanel(Color.RED);
+					break;
+					
+				case Const.C_IA1:
+						tiles[x][y].setOwner(Const.C_IA1);
+						tiles[x][y].paintPanel(Color.BLUE);
+					break;
+					
+				case Const.C_IA2:
+					tiles[x][y].setOwner(Const.C_IA2);
+					tiles[x][y].paintPanel(Color.GREEN);
+					break;
+					
+				case Const.C_IA3:
+					tiles[x][y].setOwner(Const.C_IA3);
+					tiles[x][y].paintPanel(Color.BLACK);
+					break;
 				
-			case Const.C_IA1:
-				
-				break;
-				
-			case Const.C_IA2:
-				break;
-				
-			case Const.C_IA3:
-				break;
-			
-			default:
-				break;
+				default:
+					break;
+			}
 		}
 		
-		
-		repaint();
+		else 
+		{
+			throw new GameException("Impossible de colorer la case ["+x+", "+y+"]");
+		}
+
+		repaint(); //Actualiser l'affichage
 		
 	}
 
@@ -138,11 +158,11 @@ public class GamePanel extends JPanel{
 		{
 			for(int j=0;j<tiles[i].length;j++)
 			{
-				Rectangle r = tiles[i][j].getRectangle();
-				Color col = tiles[i][j].getColor();
+				//Rectangle r = tiles[i][j].getRectangle();
+				//Color col = tiles[i][j].getColor();
 
-				g2D.setColor(col);
-				g2D.fillRect(r.x, r.y, r.width, r.height);
+				//g2D.setColor(col);
+				//g2D.fillRect(r.x, r.y, r.width, r.height);
 				//this.add(r);
 			}
 		}
