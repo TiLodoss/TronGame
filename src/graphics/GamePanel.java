@@ -128,11 +128,31 @@ public class GamePanel extends JPanel{
 		
 		else 
 		{
-			throw new GameException("Impossible de colorer la case ["+x+", "+y+"]");
+			throw new GameException("Case  ["+x+", "+y+"] deja occupee");
 		}
 
 		repaint(); //Actualiser l'affichage
 		
+	}
+	
+	/**
+	 * Methode permettant de mettre a jour les tuiles nouvellement colorees
+	 * @param tilesToUpdate
+	 */
+	public void updateData(ArrayList<Tile> tilesToUpdate)
+	{
+		for(int i=0;i<tilesToUpdate.size();i++)
+		{
+			try 
+			{
+				//TODO a ameliorer ?
+				paintTile(tilesToUpdate.get(i).getX(),tilesToUpdate.get(i).getY(), tilesToUpdate.get(i).getOwner());
+			} 
+			catch (GameException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**

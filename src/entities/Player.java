@@ -9,7 +9,6 @@ package entities;
  */
 public class Player extends GameEntity
 {
-
 	/**
 	 * Constructeur de Player
 	 */
