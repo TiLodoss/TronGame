@@ -46,6 +46,10 @@ public class GamePanel extends JPanel{
 		this.setPreferredSize(new Dimension(100,100));
 		initGrid(size);
 	}
+	
+	public Tile[][] getTiles() {
+		return tiles;
+	}
 
 	/**
 	 * Méthode de création de la grille de jeu vide
