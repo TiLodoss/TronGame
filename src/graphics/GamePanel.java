@@ -34,7 +34,7 @@ public class GamePanel extends JPanel{
 	 */
 	public GamePanel(int size) throws GameException
 	{
-		if(size > 100)
+		if(size > Const.NB_MAXTILES)
 		{
 			throw new GameException("Dimensions trop grandes !");
 		}

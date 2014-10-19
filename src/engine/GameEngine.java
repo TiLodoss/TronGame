@@ -6,6 +6,7 @@ import other.Const;
 import entities.GameEntity;
 import entities.IA;
 import entities.Player;
+import graphics.GamePanel;
 import graphics.MainWindow;
 import graphics.Tile;
 
@@ -22,23 +23,25 @@ public class GameEngine {
 	private ArrayList<GameEntity> entities; //liste des joueurs/IAs
 	private Player player; //le joueur
 	private int nbRounds, currentRound; //nombre de rounds a jouer et round actuel
+	private GamePanel gPanel;
 	
 	/**
 	 * Constructeur de GameEngine
 	 * @param window
 	 */
-	public GameEngine(MainWindow window)
+	public GameEngine(MainWindow window, GamePanel gPanel)
 	{
 		this.window = window;
+		this.gPanel = gPanel;
 		this.entities = new ArrayList<GameEntity>();
 		this.player = new Player();
 		this.nbRounds = Const.NB_MAXROUNDS;
 		this.currentRound = 0;
 		this.entities.add(player);
 		
-		this.entities.add(new IA(Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
-		this.entities.add(new IA(Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
+		this.entities.add(new IA(this.gPanel, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
+		this.entities.add(new IA(this.gPanel, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
+		this.entities.add(new IA(this.gPanel, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
 	}
 	
 	/**

@@ -1,6 +1,10 @@
 package entities;
 
+import java.awt.Color;
+
 import other.Const;
+import graphics.GamePanel;
+import graphics.Tile;
 
 /**
  * Classe IA
@@ -13,9 +17,11 @@ public class IA extends GameEntity
 {
 	private int diffLvl; //niveau de difficulté
 	private int posX, posY; //position en x et en y
+	private GamePanel gPanel;
 	
-	public IA(int lvl, int x, int y)
+	public IA(GamePanel panel, int lvl, int x, int y)
 	{
+		gPanel = panel;
 		diffLvl = lvl;
 		posX = x;
 		posY = y;
@@ -29,10 +35,53 @@ public class IA extends GameEntity
 	public boolean moveIA(int lvl) {
 		switch(lvl) {
 			case Const.IA_LVL0:
-				//if ()
-			break;
+				return deplacerSpirale();
+
+			case Const.IA_LVL1:
+				return deplacerAleatoire();
+			
+			case Const.IA_LVL2:
+				return suivreJoueur();
 		}
 		
+		return false;
+	}
+	
+	public boolean deplacerSpirale() {
+		Tile[][] tiles = gPanel.getTiles();
+		
+		if (posX == 0 && posY == 0) {
+			while (tiles[posX][posY++].getColor() == Color.LIGHT_GRAY) {
+				move(Const.DIR_RIGHT);
+			}			
+		}
+		
+		else if (posY == Const.NB_MAXTILES && posX == 0) {
+			while (tiles[posX++][posY].getColor() == Color.LIGHT_GRAY) {
+				move(Const.DIR_BOTTOM);
+			}
+		}
+		
+		else if (posX == Const.NB_MAXTILES && posY == Const.NB_MAXTILES) {
+			while (tiles[posX--][posY].getColor() == Color.LIGHT_GRAY) {
+				move(Const.DIR_LEFT);
+			}
+		}
+		
+		else if (posX == 0 && posY == Const.NB_MAXTILES) {
+			while (tiles[posX][posY--].getColor() == Color.LIGHT_GRAY) {
+				move(Const.DIR_TOP);
+			} 
+		}
+		
+		return false;
+	}
+	
+	public boolean deplacerAleatoire() {
+		return false;
+	}
+	
+	public boolean suivreJoueur() {
 		return false;
 	}
 

@@ -14,6 +14,7 @@ public class Const {
 	public final static int NB_IA = 3; //nombre d'IA
 	public final static int ENT_ALIVE =0, ENT_DEAD = 1; //etat d'un joueur/IA (vivant, mort)
 	public final static int NB_MAXROUNDS = 3; //nombre de rounds (au meilleur de 3)
+	public final static int NB_MAXTILES = 100; //nombre de tuiles de la grille
 	
 
 }

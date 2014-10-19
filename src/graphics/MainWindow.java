@@ -44,7 +44,16 @@ public class MainWindow extends JFrame {
 	 */
 	public MainWindow(String title, int width, int height, int size)
 	{
-		this.engine = new GameEngine(this);
+		try 
+		{
+			this.gamePanel = new GamePanel(size);
+		} 
+		catch (GameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.engine = new GameEngine(this, gamePanel);
 		
 		this.setTitle(title);
 		this.setSize(width, height);
@@ -56,14 +65,7 @@ public class MainWindow extends JFrame {
 		this.mainPanel = new JPanel();
 		this.bottomPanel = new JPanel();
 		
-		try 
-		{
-			this.gamePanel = new GamePanel(size);
-		} 
-		catch (GameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		//Layouts
 		this.mainLayout = new BorderLayout();
