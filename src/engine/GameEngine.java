@@ -1,5 +1,6 @@
 package engine;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import other.Const;
@@ -24,6 +25,7 @@ public class GameEngine {
 	private Player player; //le joueur
 	private int nbRounds, currentRound; //nombre de rounds a jouer et round actuel
 	private GamePanel gPanel;
+	private ArrayList<Tile> coloredTiles; //liste des tuiles colorees par le joueur/les ia
 	
 	/**
 	 * Constructeur de GameEngine
@@ -34,14 +36,17 @@ public class GameEngine {
 		this.window = window;
 		this.gPanel = gPanel;
 		this.entities = new ArrayList<GameEntity>();
+		this.coloredTiles = new ArrayList<Tile>();
 		this.player = new Player();
 		this.nbRounds = Const.NB_MAXROUNDS;
 		this.currentRound = 0;
 		this.entities.add(player);
 		
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, 0, 0)); //ia idiote (deplacement spirale)
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL1, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL2, 15, 75)); // ia intelligente (suit le joueur en diagonale)
+		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
+		this.entities.add(new IA(this.gPanel, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
+		this.entities.add(new IA(this.gPanel, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
+		
+		play();
 	}
 	
 	/**
@@ -67,7 +72,18 @@ public class GameEngine {
 	 */
 	public void play()
 	{
-		//TODO
+		//TEST
+		for(int i=0;i<10;i++)
+		{
+			entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
+		}
+		
+		for(Tile t : entities.get(0).getTiles())
+		{
+			//t.setOwner(Const.C_PLAYER); //FIXME pas bon, ça change aussi l'owner sur la tuile de tiles[][]
+		}
+		
+		refresh();
 	}
 	
 	/**
@@ -82,6 +98,7 @@ public class GameEngine {
 		//On ajou
 		for(int i=0;i<entities.size();i++)
 		{
+			System.out.println("nb tuile colorees : "+entities.get(i).getTiles().size());
 			updatedTiles.addAll(entities.get(i).getTiles());
 		}
 		
@@ -107,6 +124,40 @@ public class GameEngine {
 	public void setEntities(ArrayList<GameEntity> entities) {
 		this.entities = entities;
 	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public int getNbRounds() {
+		return nbRounds;
+	}
+
+	public void setNbRounds(int nbRounds) {
+		this.nbRounds = nbRounds;
+	}
+
+	public int getCurrentRound() {
+		return currentRound;
+	}
+
+	public void setCurrentRound(int currentRound) {
+		this.currentRound = currentRound;
+	}
+
+	public ArrayList<Tile> getColoredTiles() {
+		return coloredTiles;
+	}
+
+	public void setColoredTiles(ArrayList<Tile> coloredTiles) {
+		this.coloredTiles = coloredTiles;
+	}
+	
+	
 	
 
 }

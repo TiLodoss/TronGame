@@ -14,6 +14,7 @@ import other.Const;
  *
  */
 public abstract class GameEntity {
+	protected int ownerCode; //identifiant pour les cases colorees par l'entite
 	protected int score; //score du joueur ou de l'ia
 	protected int status; //statut (vivant ou mort)
 	protected ArrayList<Tile> tiles; //ensemble des tuiles appartenant a l'entite
@@ -58,5 +59,10 @@ public abstract class GameEntity {
 	public void setCurrentTile(Tile currentTile) {
 		this.currentTile = currentTile;
 	}
-	
+	public int getOwnerCode() {
+		return ownerCode;
+	}
+	public void setOwnerCode(int ownerCode) {
+		this.ownerCode = ownerCode;
+	}
 }

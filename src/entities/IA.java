@@ -15,22 +15,23 @@ import graphics.Tile;
  */
 public class IA extends GameEntity
 {
-	private int diffLvl; //niveau de difficulté
+	private int diffLvl; //niveau de difficultï¿½
 	private int posX, posY; //position en x et en y
 	private GamePanel gPanel;
 	
-	public IA(GamePanel panel, int lvl, int x, int y)
+	public IA(GamePanel panel, int lvl, int ownerCodeIA, int x, int y)
 	{
 		gPanel = panel;
 		diffLvl = lvl;
+		ownerCode = ownerCodeIA;
 		posX = x;
 		posY = y;
 	}
 	
 	/**
-	 * Méthode déclenchant le mouvement des IA selon son niveau
-	 * @param lvl Niveau de difficulté de l'IA
-	 * @return TRUE si le déplacement est possible, FALSE sinon
+	 * Mï¿½thode dï¿½clenchant le mouvement des IA selon son niveau
+	 * @param lvl Niveau de difficultï¿½ de l'IA
+	 * @return TRUE si le dï¿½placement est possible, FALSE sinon
 	 */
 	public boolean moveIA(int lvl) {
 		switch(lvl) {

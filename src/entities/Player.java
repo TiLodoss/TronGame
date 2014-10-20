@@ -1,5 +1,7 @@
 package entities;
 
+import other.Const;
+
 /**
  * Classe Player
  * @author Yannis M'RAD, Vincent AUNAI
@@ -14,7 +16,7 @@ public class Player extends GameEntity
 	 */
 	public Player()
 	{
-		
+		super.setOwnerCode(Const.C_PLAYER);
 	}
 	
 	@Override

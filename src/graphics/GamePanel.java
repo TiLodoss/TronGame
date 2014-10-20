@@ -144,6 +144,7 @@ public class GamePanel extends JPanel{
 	{
 		for(int i=0;i<tilesToUpdate.size();i++)
 		{
+			System.out.println("tuile "+i);
 			try 
 			{
 				//TODO a ameliorer ?
