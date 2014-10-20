@@ -25,7 +25,7 @@ import exceptions.GameException;
 public class GamePanel extends JPanel{
 
 	private Tile[][] tiles; //"carres" de la grille de jeu
-	private GridLayout layout;
+	private GridLayout gridLayout;
 
 	/**
 	 * Constructeur de GamePanel
@@ -40,16 +40,13 @@ public class GamePanel extends JPanel{
 		}
 
 		this.tiles = new Tile[size][size];
-		this.layout = new GridLayout(size,size);
-		this.setLayout(layout);
+		this.gridLayout = new GridLayout(size,size);
+		this.setLayout(gridLayout);
 		setBackground(Color.LIGHT_GRAY);
 		this.setPreferredSize(new Dimension(100,100));
 		initGrid(size);
 	}
-	
-	public Tile[][] getTiles() {
-		return tiles;
-	}
+
 
 	/**
 	 * Méthode de création de la grille de jeu vide
@@ -73,7 +70,7 @@ public class GamePanel extends JPanel{
 		}
 		
 		//Test
-		try
+		/*try
 		{
 			paintTile(0,10, 0);
 			paintTile(1,10, 0);
@@ -87,7 +84,7 @@ public class GamePanel extends JPanel{
 		catch(GameException e)
 		{
 			System.out.println(e.getMessage());
-		}
+		} */
 		
 	}
 	
@@ -191,6 +188,27 @@ public class GamePanel extends JPanel{
 			}
 		}
 	}
+
+	public GridLayout getGridLayout() {
+		return gridLayout;
+	}
+
+	public void setGridLayout(GridLayout layout) {
+		this.gridLayout = layout;
+	}
+	
+	
+	public Tile[][] getTiles() {
+		return tiles;
+	}
+
+	public void setTiles(Tile[][] tiles) {
+		this.tiles = tiles;
+	}
+	
+	
+	
+	
 
 
 }

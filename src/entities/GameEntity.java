@@ -17,6 +17,7 @@ public abstract class GameEntity {
 	protected int score; //score du joueur ou de l'ia
 	protected int status; //statut (vivant ou mort)
 	protected ArrayList<Tile> tiles; //ensemble des tuiles appartenant a l'entite
+	protected Tile currentTile; //tuile ou se trouve actuellement l'entite
 	
 	//Methodes abstraites
 	public abstract void move(int direction); //deplacement dans une direction
@@ -51,4 +52,11 @@ public abstract class GameEntity {
 	public void setTiles(ArrayList<Tile> tiles) {
 		this.tiles = tiles;
 	}
+	public Tile getCurrentTile() {
+		return currentTile;
+	}
+	public void setCurrentTile(Tile currentTile) {
+		this.currentTile = currentTile;
+	}
+	
 }

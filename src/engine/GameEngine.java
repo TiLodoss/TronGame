@@ -39,9 +39,9 @@ public class GameEngine {
 		this.currentRound = 0;
 		this.entities.add(player);
 		
-		this.entities.add(new IA(this.gPanel, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
-		this.entities.add(new IA(this.gPanel, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(this.gPanel, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
+		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, 0, 0)); //ia idiote (deplacement spirale)
+		this.entities.add(new IA(this.gPanel, Const.IA_LVL1, 50, 50)); //ia moyenne (deplacement random)
+		this.entities.add(new IA(this.gPanel, Const.IA_LVL2, 15, 75)); // ia intelligente (suit le joueur en diagonale)
 	}
 	
 	/**
