@@ -2,6 +2,8 @@ package graphics;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -111,7 +113,21 @@ public class MainWindow extends JFrame {
 		mainPanel.add(gamePanel, BorderLayout.CENTER);
 		mainPanel.add(play, BorderLayout.NORTH);
 		
+		
+		
+		//Listeners
+		play.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				engine.play();
+				
+			}
+			
+		});
+		
 		this.setVisible(true);
+
 	}
 
 

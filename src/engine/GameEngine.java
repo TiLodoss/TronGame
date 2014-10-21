@@ -7,6 +7,7 @@ import other.Const;
 import entities.GameEntity;
 import entities.IA;
 import entities.Player;
+import exceptions.GameException;
 import graphics.GamePanel;
 import graphics.MainWindow;
 import graphics.Tile;
@@ -45,8 +46,6 @@ public class GameEngine {
 		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
 		this.entities.add(new IA(this.gPanel, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
 		this.entities.add(new IA(this.gPanel, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
-		
-		play();
 	}
 	
 	/**
@@ -75,7 +74,20 @@ public class GameEngine {
 		//TEST
 		for(int i=0;i<10;i++)
 		{
-			entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
+			//entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
+			
+			//A voir si on fait directement paintTile a partir d'ici (plus simple)
+			//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
+			try 
+			{
+				window.getGamePanel().paintTile(1, i, entities.get(0).getOwnerCode());	
+			} 
+			
+			catch (GameException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		for(Tile t : entities.get(0).getTiles())
@@ -83,7 +95,7 @@ public class GameEngine {
 			//t.setOwner(Const.C_PLAYER); //FIXME pas bon, ça change aussi l'owner sur la tuile de tiles[][]
 		}
 		
-		refresh();
+		//refresh();
 	}
 	
 	/**
