@@ -11,7 +11,6 @@ public class Main {
 	{
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 		MainWindow fenetre = new MainWindow("Tron Game",600,600,100);
-		// test avec nouveau projet
 	}
 
 }

@@ -17,11 +17,13 @@ public abstract class GameEntity {
 	protected int ownerCode; //identifiant pour les cases colorees par l'entite
 	protected int score; //score du joueur ou de l'ia
 	protected int status; //statut (vivant ou mort)
+	protected int posX, posY; // position du joueur ou de l'ia
+	
 	protected ArrayList<Tile> tiles; //ensemble des tuiles appartenant a l'entite
 	protected Tile currentTile; //tuile ou se trouve actuellement l'entite
 	
 	//Methodes abstraites
-	public abstract void move(int direction); //deplacement dans une direction
+	public abstract boolean move(GameEntity entity); //deplacement dans une direction
 	public abstract boolean collides(); //detection de collision
 	
 	/**
@@ -46,6 +48,19 @@ public abstract class GameEntity {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public int getPosX() {
+		return posX;
+	}
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+	public int getPosY() {
+		return posY;
+	}
+	public void setPosY(int posY) {
+		this.posY = posY;
 	}
 	public ArrayList<Tile> getTiles() {
 		return tiles;

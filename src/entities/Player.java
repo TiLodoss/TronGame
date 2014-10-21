@@ -20,9 +20,9 @@ public class Player extends GameEntity
 	}
 	
 	@Override
-	public void move(int direction) {
+	public boolean move(GameEntity entity) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 	@Override

@@ -44,8 +44,8 @@ public class GameEngine {
 		this.entities.add(player);
 		
 		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
+		//this.entities.add(new IA(this.gPanel, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
+		//this.entities.add(new IA(this.gPanel, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
 	}
 	
 	/**
@@ -72,20 +72,33 @@ public class GameEngine {
 	public void play()
 	{
 		//TEST
-		for(int i=0;i<10;i++)
-		{
+		//for(int i=1;i<10;i++)
+		//{
 			//entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
 			
 			//A voir si on fait directement paintTile a partir d'ici (plus simple)
 			//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
 			try 
 			{
-				window.getGamePanel().paintTile(1, i, entities.get(0).getOwnerCode());	
+				//window.getGamePanel().paintTile(1, 1, entities.get(0).getOwnerCode());
+				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
+				
 			} 
 			
 			catch (GameException e) 
 			{
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		//}
+		
+		while (entities.get(1).move(entities.get(1))) {
+			try {
+				
+				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
+			}
+		
+			catch(GameException e) {
 				e.printStackTrace();
 			}
 		}

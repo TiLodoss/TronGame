@@ -16,7 +16,6 @@ import graphics.Tile;
 public class IA extends GameEntity
 {
 	private int diffLvl; //niveau de difficultï¿½
-	private int posX, posY; //position en x et en y
 	private GamePanel gPanel;
 	
 	public IA(GamePanel panel, int lvl, int ownerCodeIA, int x, int y)
@@ -33,7 +32,7 @@ public class IA extends GameEntity
 	 * @param lvl Niveau de difficultï¿½ de l'IA
 	 * @return TRUE si le dï¿½placement est possible, FALSE sinon
 	 */
-	public boolean moveIA(int lvl) {
+	/*public boolean moveIA(int lvl) {
 		switch(lvl) {
 			case Const.IA_LVL0:
 				return deplacerSpirale();
@@ -46,36 +45,44 @@ public class IA extends GameEntity
 		}
 		
 		return false;
-	}
+	}*/
 	
 	public boolean deplacerSpirale() {
 		Tile[][] tiles = gPanel.getTiles();
 		
-		if (posX == 0 && posY == 0) {
-			while (tiles[posX][posY++].getColor() == Color.LIGHT_GRAY) {
-				move(Const.DIR_RIGHT);
+		//déplacement à droite
+		//if (posX == 0 && posY == 0) {
+			if (tiles[this.posX++][this.posY].getOwner() == Const.C_NONE) {
+				this.posX++;
+				return true;
 			}			
-		}
+		//}
 		
-		else if (posY == Const.NB_MAXTILES && posX == 0) {
-			while (tiles[posX++][posY].getColor() == Color.LIGHT_GRAY) {
-				move(Const.DIR_BOTTOM);
+		//déplacement en bas
+		//else if (posX == Const.NB_MAXTILES && posY == 0) {
+			else if (tiles[this.posX][this.posY++].getOwner() == Const.C_NONE) {
+				this.posY++;
+				return true;
 			}
-		}
+		//}
 		
-		else if (posX == Const.NB_MAXTILES && posY == Const.NB_MAXTILES) {
-			while (tiles[posX--][posY].getColor() == Color.LIGHT_GRAY) {
-				move(Const.DIR_LEFT);
+		//déplacement à gauche
+		//else if (posX == Const.NB_MAXTILES && posY == Const.NB_MAXTILES) {
+			else if (tiles[this.posX--][this.posY].getOwner() == Const.C_NONE) {
+				this.posX--;
+				return true;
 			}
-		}
+		//}
 		
-		else if (posX == 0 && posY == Const.NB_MAXTILES) {
-			while (tiles[posX][posY--].getColor() == Color.LIGHT_GRAY) {
-				move(Const.DIR_TOP);
+		//déplacement en haut
+		//else if (posX == 0 && posY == Const.NB_MAXTILES) {
+			else if (tiles[this.posX][this.posY--].getOwner() == Const.C_NONE) {
+				this.posY--;
+				return true;
 			} 
-		}
+		//}
 		
-		return false;
+	else return false;
 	}
 	
 	public boolean deplacerAleatoire() {
@@ -86,29 +93,20 @@ public class IA extends GameEntity
 		return false;
 	}
 
-	@Override
-	public void move(int direction) {
-		// TODO Auto-generated method stub
-		switch(direction) {
-			case Const.DIR_LEFT: posX--;
-			break;
-			
-			case Const.DIR_RIGHT: posX++;
-			break;
-			
-			case Const.DIR_BOTTOM: posY--;
-			break;
-			
-			case Const.DIR_TOP: posY++;
-			break;
-			
-			//default:
-		}
-	}
 
 	@Override
 	public boolean collides() {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean move(GameEntity entity) {
+		// TODO Auto-generated method stub
+		switch(entity.getOwnerCode()) {
+			case Const.C_IA1: return deplacerSpirale();
+		}
+		
 		return false;
 	}
 
