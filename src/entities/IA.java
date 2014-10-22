@@ -1,6 +1,6 @@
 package entities;
 
-import java.awt.Color;
+//import java.awt.Color;
 
 import other.Const;
 import graphics.GamePanel;
@@ -15,13 +15,13 @@ import graphics.Tile;
  */
 public class IA extends GameEntity
 {
-	private int diffLvl; //niveau de difficultï¿½
+	//private int diffLvl; //niveau de difficultï¿½
 	private GamePanel gPanel;
 	
 	public IA(GamePanel panel, int lvl, int ownerCodeIA, int x, int y)
 	{
 		gPanel = panel;
-		diffLvl = lvl;
+		//diffLvl = lvl;
 		ownerCode = ownerCodeIA;
 		posX = x;
 		posY = y;
@@ -67,7 +67,7 @@ public class IA extends GameEntity
 		}
 		
 		//déplacement à gauche
-		else if (posX > 0){
+		else if (posX > 0 && posY == Const.NB_MAXTILES){
 			if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX--;
 				return true;
@@ -75,7 +75,7 @@ public class IA extends GameEntity
 		}
 		
 		//déplacement en haut
-		else if (posY > 1){
+		else if (posY > 1 & posX == 0){
 			if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
 				this.posY--;
 				return true;
