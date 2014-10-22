@@ -49,40 +49,40 @@ public class IA extends GameEntity
 	
 	public boolean deplacerSpirale() {
 		Tile[][] tiles = gPanel.getTiles();
-		
+
 		//déplacement à droite
-		//if (posX == 0 && posY == 0) {
-			if (tiles[this.posX++][this.posY].getOwner() == Const.C_NONE) {
+		if (posX<Const.NB_MAXTILES-1) {
+			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX++;
 				return true;
-			}			
-		//}
+			}
+		}
 		
 		//déplacement en bas
-		//else if (posX == Const.NB_MAXTILES && posY == 0) {
-			else if (tiles[this.posX][this.posY++].getOwner() == Const.C_NONE) {
+		else if (posY<Const.NB_MAXTILES-1) {
+			if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
 				this.posY++;
 				return true;
 			}
-		//}
+		}
 		
 		//déplacement à gauche
-		//else if (posX == Const.NB_MAXTILES && posY == Const.NB_MAXTILES) {
-			else if (tiles[this.posX--][this.posY].getOwner() == Const.C_NONE) {
+		else if (posX > 0){
+			if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX--;
 				return true;
 			}
-		//}
+		}
 		
 		//déplacement en haut
-		//else if (posX == 0 && posY == Const.NB_MAXTILES) {
-			else if (tiles[this.posX][this.posY--].getOwner() == Const.C_NONE) {
+		else if (posY > 1){
+			if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
 				this.posY--;
 				return true;
-			} 
-		//}
+			}
+		}
 		
-	else return false;
+		return false;
 	}
 	
 	public boolean deplacerAleatoire() {
