@@ -1,6 +1,8 @@
 package graphics;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +38,7 @@ public class MainWindow extends JFrame {
 	private GridLayout bottomLayout; //layout de la barre du bas
 	
 	private GameEngine engine; //moteur qui gere la logique du jeu
+	private JDialog loadingDialog;
 	
 	
 	/**
@@ -46,6 +50,8 @@ public class MainWindow extends JFrame {
 	 */
 	public MainWindow(String title, int width, int height, int size)
 	{
+		displayLoadingDialog();
+		
 		try 
 		{
 			this.gamePanel = new GamePanel(size);
@@ -108,6 +114,7 @@ public class MainWindow extends JFrame {
 		
 		//Boutons
 		play = new JButton("Jouer");
+		play.setEnabled(false); //bouton inactif au début
 		
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 		mainPanel.add(gamePanel, BorderLayout.CENTER);
@@ -127,7 +134,46 @@ public class MainWindow extends JFrame {
 		});
 		
 		this.setVisible(true);
+		
+		//Supprimer le dialog quand la fenêtre principale est correctement affichée
+		if(this.isDisplayable())
+		{
+			killLoadingDialog();
+			play.setEnabled(true); //bouton cliquable apres le chargement
+		}
 
+	}
+	
+	/**
+	 * Methode qui affiche un dialogue de chargement
+	 */
+	public void displayLoadingDialog()
+	{
+		JLabel text = new JLabel("Veuillez patienter");
+		JPanel dPanel = new JPanel();
+		this.loadingDialog = new JDialog();
+		loadingDialog.setTitle("Chargement");
+		loadingDialog.setLocationRelativeTo(null);
+		loadingDialog.setResizable(false);
+		loadingDialog.setAlwaysOnTop(true);
+
+		
+		dPanel.setPreferredSize(new Dimension(80,80));
+		dPanel.setLayout(new BorderLayout());
+		dPanel.add(text);
+		loadingDialog.add(dPanel, BorderLayout.CENTER);
+		loadingDialog.show();	
+	}
+	
+	/**
+	 * Methode qui detruit le dialogue de chargement
+	 */
+	public void killLoadingDialog()
+	{
+		if(loadingDialog.isActive())
+		{
+			loadingDialog.dispose();
+		}
 	}
 
 
