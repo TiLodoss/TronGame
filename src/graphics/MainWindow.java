@@ -131,7 +131,7 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				engine.play();
+				engine.startRound();
 				
 			}
 			

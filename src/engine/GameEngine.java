@@ -28,7 +28,7 @@ public class GameEngine {
 	private ArrayList<GameEntity> entities; //liste des joueurs/IAs
 	private Player player; //le joueur
 	private int nbRounds, currentRound; //nombre de rounds a jouer et round actuel
-	private GamePanel gPanel; // référence sur la grille de jeu
+	private GamePanel gPanel; // rï¿½fï¿½rence sur la grille de jeu
 	private ArrayList<Tile> coloredTiles; //liste des tuiles colorees par le joueur/les ia
 	private int keyPressedCode = 0;
 	
@@ -65,13 +65,26 @@ public class GameEngine {
 			currentRound++;
 			System.out.println("Round "+currentRound+" commence");
 			
-			//TODO initialisation du round
-			
 			if(currentRound > 1) //si on a joue plus d'un round, on nettoie la grille au nouveau round
 			{
 				window.getGamePanel().cleanGrid(); //rÃ©initialiser la grille
 			}
 			
+			//TODO initialisation du round	
+			
+			
+			//Affichage des joueurs/IA a leur position initiale
+			try 
+			{
+				window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
+				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
+			} 
+			
+			catch (GameException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		if(currentRound == nbRounds)
@@ -113,7 +126,7 @@ public class GameEngine {
 			
 			//A voir si on fait directement paintTile a partir d'ici (plus simple)
 			//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
-			try 
+			/*try 
 			{
 				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
 			} 
@@ -122,7 +135,7 @@ public class GameEngine {
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			} */
 		//}
 		
 		/*while (entities.get(1).move(entities.get(1))) {
@@ -136,6 +149,7 @@ public class GameEngine {
 			}
 		}*/
 			
+			//TEST bouger joueur 1
 			for(int i=0; i<50; i++) {
 				if(entities.get(0).move(entities.get(0),40)) {
 					
