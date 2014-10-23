@@ -118,28 +118,38 @@ public class GamePanel extends JPanel{
 		}
 		
 		//Ne colorier que les cases vides
-		if(tiles[y][x].getOwner() == Const.C_NONE)
+		//if(tiles[y][x].getOwner() == Const.C_NONE)
+		if(tiles[x][y].getOwner() == Const.C_NONE)
 		{
 			switch(ownerColor)
 			{
 				case Const.C_PLAYER:
-						tiles[y][x].setOwner(Const.C_PLAYER);
-						tiles[y][x].paintPanel(Color.RED);
+						//tiles[y][x].setOwner(Const.C_PLAYER);
+						//tiles[y][x].paintPanel(Color.RED);
+						tiles[x][y].setOwner(Const.C_PLAYER);
+						tiles[x][y].paintPanel(Color.RED);
+
 					break;
 					
 				case Const.C_IA1:
-						tiles[y][x].setOwner(Const.C_IA1);
-						tiles[y][x].paintPanel(Color.BLUE);
+						//tiles[y][x].setOwner(Const.C_IA1);
+						//tiles[y][x].paintPanel(Color.BLUE);
+						tiles[x][y].setOwner(Const.C_IA1);
+						tiles[x][y].paintPanel(Color.BLUE);
 					break;
 					
 				case Const.C_IA2:
-					tiles[y][x].setOwner(Const.C_IA2);
-					tiles[y][x].paintPanel(Color.GREEN);
+					//tiles[y][x].setOwner(Const.C_IA2);
+					//tiles[y][x].paintPanel(Color.GREEN);
+					tiles[x][y].setOwner(Const.C_IA2);
+					tiles[x][y].paintPanel(Color.GREEN);
 					break;
 					
 				case Const.C_IA3:
-					tiles[y][x].setOwner(Const.C_IA3);
-					tiles[y][x].paintPanel(Color.BLACK);
+					//tiles[y][x].setOwner(Const.C_IA3);
+					//tiles[y][x].paintPanel(Color.BLACK);
+					tiles[x][y].setOwner(Const.C_IA3);
+					tiles[x][y].paintPanel(Color.BLACK);
 					break;
 				
 				default:

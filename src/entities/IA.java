@@ -27,31 +27,11 @@ public class IA extends GameEntity
 		posY = y;
 	}
 	
-	/**
-	 * Mï¿½thode dï¿½clenchant le mouvement des IA selon son niveau
-	 * @param lvl Niveau de difficultï¿½ de l'IA
-	 * @return TRUE si le dï¿½placement est possible, FALSE sinon
-	 */
-	/*public boolean moveIA(int lvl) {
-		switch(lvl) {
-			case Const.IA_LVL0:
-				return deplacerSpirale();
-
-			case Const.IA_LVL1:
-				return deplacerAleatoire();
-			
-			case Const.IA_LVL2:
-				return suivreJoueur();
-		}
-		
-		return false;
-	}*/
-	
 	public boolean deplacerSpirale() {
 		Tile[][] tiles = gPanel.getTiles();
 
 		//déplacement à droite
-		if (posX<Const.NB_MAXTILES-1) {
+		if (posX<Const.NB_MAXTILES-1 && posY == 0) {
 			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX++;
 				return true;
@@ -59,7 +39,7 @@ public class IA extends GameEntity
 		}
 		
 		//déplacement en bas
-		else if (posY<Const.NB_MAXTILES-1) {
+		else if (posX == Const.NB_MAXTILES-1 && posY<Const.NB_MAXTILES-1) {
 			if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
 				this.posY++;
 				return true;
@@ -67,7 +47,7 @@ public class IA extends GameEntity
 		}
 		
 		//déplacement à gauche
-		else if (posX > 0 && posY == Const.NB_MAXTILES){
+		else if (posX > 0 && posY == Const.NB_MAXTILES-1){
 			if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX--;
 				return true;
@@ -101,13 +81,18 @@ public class IA extends GameEntity
 	}
 
 	@Override
-	public boolean move(GameEntity entity) {
+	public boolean move(GameEntity entity, int direction) {
 		// TODO Auto-generated method stub
 		switch(entity.getOwnerCode()) {
 			case Const.C_IA1: return deplacerSpirale();
 		}
 		
 		return false;
+	}
+	
+	public boolean move(GameEntity entity) {
+		// TODO Auto-generated method stub
+		return move(entity, 0);
 	}
 
 }

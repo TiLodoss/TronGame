@@ -23,6 +23,7 @@ public abstract class GameEntity {
 	protected Tile currentTile; //tuile ou se trouve actuellement l'entite
 	
 	//Methodes abstraites
+	public abstract boolean move(GameEntity entity, int direction); //deplacement dans une direction
 	public abstract boolean move(GameEntity entity); //deplacement dans une direction
 	public abstract boolean collides(); //detection de collision
 	

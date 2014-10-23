@@ -1,9 +1,12 @@
 package engine;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import other.Const;
+import other.InteractionClavier;
 import entities.GameEntity;
 import entities.IA;
 import entities.Player;
@@ -25,8 +28,9 @@ public class GameEngine {
 	private ArrayList<GameEntity> entities; //liste des joueurs/IAs
 	private Player player; //le joueur
 	private int nbRounds, currentRound; //nombre de rounds a jouer et round actuel
-	private GamePanel gPanel;
+	private GamePanel gPanel; // référence sur la grille de jeu
 	private ArrayList<Tile> coloredTiles; //liste des tuiles colorees par le joueur/les ia
+	private int keyPressedCode = 0;
 	
 	/**
 	 * Constructeur de GameEngine
@@ -38,7 +42,7 @@ public class GameEngine {
 		this.gPanel = gPanel;
 		this.entities = new ArrayList<GameEntity>();
 		this.coloredTiles = new ArrayList<Tile>();
-		this.player = new Player();
+		this.player = new Player(gPanel, 10, 10);
 		this.nbRounds = Const.NB_MAXROUNDS;
 		this.currentRound = 0;
 		this.entities.add(player);
@@ -92,6 +96,14 @@ public class GameEngine {
 	 */
 	public void play()
 	{
+		InteractionClavier interaction = new InteractionClavier((Player)entities.get(0));
+		
+		window.addKeyListener(interaction);
+		interaction.keyPressed(new KeyEvent(window, 
+							KeyEvent.KEY_PRESSED,
+							(long) 1, 0, KeyEvent.VK_RIGHT,
+							KeyEvent.CHAR_UNDEFINED));
+		
 		//gameOver(); //test fenetre de score
 		
 		//TEST
@@ -103,9 +115,7 @@ public class GameEngine {
 			//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
 			try 
 			{
-				//window.getGamePanel().paintTile(1, 1, entities.get(0).getOwnerCode());
 				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-				
 			} 
 			
 			catch (GameException e) 
@@ -115,7 +125,7 @@ public class GameEngine {
 			}
 		//}
 		
-		while (entities.get(1).move(entities.get(1))) {
+		/*while (entities.get(1).move(entities.get(1))) {
 			try {
 				
 				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
@@ -124,14 +134,26 @@ public class GameEngine {
 			catch(GameException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
+			
+			for(int i=0; i<50; i++) {
+				if(entities.get(0).move(entities.get(0),40)) {
+					
+					try {
+						window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
+					}
+					catch(GameException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		
-		for(Tile t : entities.get(0).getTiles())
-		{
+		//for(Tile t : entities.get(0).getTiles())
+		//{
 			//t.setOwner(Const.C_PLAYER); //FIXME pas bon, Ã§a change aussi l'owner sur la tuile de tiles[][]
-		}
-		
-		//refresh();
+		//}
+			
+		refresh();
 	}
 	
 	/**
