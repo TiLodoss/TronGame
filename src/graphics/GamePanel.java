@@ -89,7 +89,22 @@ public class GamePanel extends JPanel{
 	}
 	
 	/**
-	 * Methode pour changer la couleur d'une tuile
+	 * Methode qui reinitialise les tuiles de la grille
+	 */
+	public void cleanGrid()
+	{
+		for(int i=0;i<tiles.length;i++)
+		{
+			for(int j=0;j<tiles.length;j++)
+			{
+				tiles[i][j].setOwner(Const.C_NONE);
+				tiles[i][j].paintPanel(Color.WHITE);
+			}
+		}
+	}
+	
+	/**
+	 * Methode pour changer la couleur / le proprietaire d'une tuile
 	 * @param x
 	 * @param y
 	 * @param ownerColor

@@ -62,8 +62,29 @@ public class GameEngine {
 			System.out.println("Round "+currentRound+" commence");
 			
 			//TODO initialisation du round
+			
+			if(currentRound > 1) //si on a joue plus d'un round, on nettoie la grille au nouveau round
+			{
+				window.getGamePanel().cleanGrid(); //réinitialiser la grille
+			}
+			
+		}
+		
+		if(currentRound == nbRounds)
+		{
+			gameOver();
 		}
 		return success;
+	}
+	
+	/**
+	 * Methode declenchee a la fin du jeu
+	 * @param gameFinished
+	 */
+	public void gameOver()
+	{
+		window.displayGameOverDialog(entities);
+		
 	}
 	
 	/**
@@ -71,6 +92,8 @@ public class GameEngine {
 	 */
 	public void play()
 	{
+		//gameOver(); //test fenetre de score
+		
 		//TEST
 		//for(int i=1;i<10;i++)
 		//{
@@ -128,6 +151,27 @@ public class GameEngine {
 		}
 		
 		this.window.getGamePanel().updateData(updatedTiles);
+	}
+	
+	/**
+	 * Methode qui reinitialise les donnees du jeu
+	 */
+	public void resetGame()
+	{
+		//reinitialiser la grille
+		window.getGamePanel().cleanGrid();
+		
+		//Remise a zero du score
+		for(GameEntity e : entities)
+		{
+			e.setScore(0);
+			e.setStatus(Const.ENT_ALIVE);
+		}
+		
+		//remise a zero des rounds
+		this.setNbRounds(0);
+		this.setCurrentRound(0);
+		
 	}
 
 

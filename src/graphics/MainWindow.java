@@ -3,9 +3,11 @@ package graphics;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -14,9 +16,11 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import engine.GameEngine;
+import entities.GameEntity;
 import exceptions.GameException;
 
 /**
@@ -38,7 +42,7 @@ public class MainWindow extends JFrame {
 	private GridLayout bottomLayout; //layout de la barre du bas
 	
 	private GameEngine engine; //moteur qui gere la logique du jeu
-	private JDialog loadingDialog;
+	private JDialog loadingDialog, gameOverDialog;
 	
 	
 	/**
@@ -150,18 +154,20 @@ public class MainWindow extends JFrame {
 	public void displayLoadingDialog()
 	{
 		JLabel text = new JLabel("Veuillez patienter");
+		text.setHorizontalAlignment(SwingConstants.CENTER);
 		JPanel dPanel = new JPanel();
 		this.loadingDialog = new JDialog();
 		loadingDialog.setTitle("Chargement");
-		loadingDialog.setLocationRelativeTo(null);
+		loadingDialog.setLocationRelativeTo(this);
 		loadingDialog.setResizable(false);
 		loadingDialog.setAlwaysOnTop(true);
+		loadingDialog.setSize(new Dimension(250,100));
+		loadingDialog.setUndecorated(true);
 
 		
-		dPanel.setPreferredSize(new Dimension(80,80));
 		dPanel.setLayout(new BorderLayout());
-		dPanel.add(text);
-		loadingDialog.add(dPanel, BorderLayout.CENTER);
+		dPanel.add(text, BorderLayout.CENTER);
+		loadingDialog.setContentPane(dPanel);
 		loadingDialog.show();	
 	}
 	
@@ -175,7 +181,68 @@ public class MainWindow extends JFrame {
 			loadingDialog.dispose();
 		}
 	}
+	
+	/**
+	 * Methode d'affichage du dialogue affichant le score final
+	 */
+	public void displayGameOverDialog(ArrayList<GameEntity> entities)
+	{
+		System.out.println("aaa");
+		JButton quit = new JButton("Quitter");
+		JButton restart = new JButton("Rejouer");
+		JPanel panel = new JPanel(), scorePanel = new JPanel(), buttonsPanel = new JPanel();
+		
+		this.gameOverDialog = new JDialog();
+		gameOverDialog.setTitle("Score final");
+		gameOverDialog.setLocationRelativeTo(null);
+		gameOverDialog.setResizable(false);
+		gameOverDialog.setAlwaysOnTop(true);
+		gameOverDialog.setSize(new Dimension(250,250));
+		gameOverDialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		
+		panel.setLayout(new BorderLayout());
+		scorePanel.setLayout(new GridLayout(entities.size(),2)); // tableau des scores
+		buttonsPanel.setLayout(new FlowLayout());
+		
+		for(GameEntity e : entities)
+		{
+			scorePanel.add(new JLabel(e.getClass().getSimpleName()));
+			scorePanel.add(new JLabel(e.getScore()+""));
+		}
+		
+		/* Listeners des boutons */
+		
+		//Bouton quitter
+		quit.addActionListener(new ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				MainWindow.this.dispose();
+				System.exit(0);
+			}
+			
+		});
+		
+		buttonsPanel.add(restart);
+		buttonsPanel.add(quit);
+		panel.add(scorePanel, BorderLayout.CENTER);
+		panel.add(buttonsPanel,BorderLayout.SOUTH);
+		
+		gameOverDialog.setContentPane(panel);
+		gameOverDialog.pack();
+		gameOverDialog.show();
+	}
+	
+	/**
+	 * Methode qui detruit le dialogue de score
+	 */
+	public void killGameOverDialog()
+	{
+		if(gameOverDialog.isActive())
+		{
+			gameOverDialog.dispose();
+		}
+	}
 
 	public JPanel getMainPanel() {
 		return mainPanel;
