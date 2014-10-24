@@ -66,6 +66,7 @@ public class GameEngine {
 	public boolean startRound()
 	{
 		boolean success = false;
+		window.getGamePanel().cleanGrid();
 
 		if(currentRound < nbRounds)
 		{
@@ -119,6 +120,7 @@ public class GameEngine {
 	public void play()
 	{
 
+		Tile[][] tiles = window.getGamePanel().getTiles();
 		GameThread gameThread = new GameThread();
 		gameThread.start();
 
@@ -396,7 +398,7 @@ public class GameEngine {
 					
 				}
 				
-				//Si le joueur s'est deplace, colorer la tuile ou il vient de passer
+				//Si l'IA s'est deplace, colorer la tuile ou il vient de passer
 				@Override
 				public void hasMoved() {
 					try 

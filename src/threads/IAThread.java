@@ -28,14 +28,15 @@ public class IAThread extends EntityThread{
 	@Override
 	public void run()
 	{
-		if(!entity.collides()) {
+		//if(!entity.collides()) {
 			entity.move(entity);
 			//iaListener.hasMoved();
-		}
+		//}
 		
-		else {
+		//else {
 			System.out.println("IA morte");
-		}
+			
+		//}
 	}
 
 	public IAListener getIAListener() {

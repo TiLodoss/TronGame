@@ -120,16 +120,15 @@ public class IA extends GameEntity
 		*/
 		
 		//d�placement � droite
-		if (posX<Const.NB_MAXTILES-1 && posY == 0) {
+		if (this.posX<Const.NB_MAXTILES-1 && this.posY == 0) {
 			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX++;
-				this.currentDirection = Const.DIR_RIGHT;
 				return true;
 			}
 		}
 		
 		//d�placement en bas
-		else if (posX == Const.NB_MAXTILES-1 && posY<Const.NB_MAXTILES-1) {
+		else if (this.posX == Const.NB_MAXTILES-1 && this.posY<Const.NB_MAXTILES-1) {
 			if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
 				this.posY++;
 				return true;
@@ -137,17 +136,17 @@ public class IA extends GameEntity
 		}
 		
 		//d�placement � gauche
-		else if (posX > 0 && posY == Const.NB_MAXTILES-1){
-			if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
-				this.posX--;
+		else if (this.posX > 0 && this.posY == Const.NB_MAXTILES-1){
+			this.posX--;
+			if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
 				return true;
 			}
 		}
 		
 		//d�placement en haut
-		else if (posY > 1 & posX == 0){
-			if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
-				this.posY--;
+		else if (this.posY > 0 && this.posX == 0){
+			this.posY--;
+			if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
 				return true;
 			}
 		}
@@ -167,9 +166,8 @@ public class IA extends GameEntity
 	@Override
 	public boolean collides() {
 		// TODO Auto-generated method stub
-		if ((tiles[this.posX][this.posY].getOwner() != Const.C_NONE) 
-				&& this.posX != 0
-				&& this.posY != 0) return true;
+		if (this.posX == 0 && this.posY == 0) return false;
+		else if ((tiles[this.posX][this.posY].getOwner() != Const.C_NONE)) return true;
 		
 		return false;
 	}
