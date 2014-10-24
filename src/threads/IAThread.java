@@ -1,5 +1,6 @@
 package threads;
 
+import listeners.IAListener;
 import other.Const;
 import entities.IA;
 import entities.Player;
@@ -12,6 +13,7 @@ import entities.Player;
  *
  */
 public class IAThread extends EntityThread{
+	private IAListener iaListener;
 	/**
 	 * Constructeur de IAThread
 	 * @param ia
@@ -28,12 +30,24 @@ public class IAThread extends EntityThread{
 	{
 		if(!entity.collides()) {
 			entity.move(entity);
+			//iaListener.hasMoved();
 		}
 		
 		else {
 			System.out.println("IA morte");
 		}
 	}
+
+	public IAListener getIAListener() {
+		return iaListener;
+	}
+
+	public void setIAListener(IAListener iaListener) {
+		this.iaListener = iaListener;
+	}
+	
+	
+	
 
 
 }

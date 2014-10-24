@@ -29,15 +29,106 @@ public class IA extends GameEntity
 	}
 	
 	public boolean deplacerSpirale() {
-		//déplacement à droite
+		
+		/*switch(this.currentDirection)
+		{
+			case Const.DIR_RIGHT:
+				if (posX<Const.NB_MAXTILES-1) {
+					if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
+						this.posX++;
+						this.currentDirection = Const.DIR_RIGHT;
+						return true;
+					}
+					
+					//Si a droite c'est bloque, on descend
+					else
+					{
+						this.currentDirection = Const.DIR_BOTTOM;
+					}
+				}
+				
+				else
+				{
+					this.currentDirection = Const.DIR_BOTTOM;
+				}
+				break;
+				
+			case Const.DIR_LEFT:
+				if (posX > 0){
+					if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
+						this.posX--;
+						this.currentDirection = Const.DIR_LEFT;
+						return true;
+					}
+					
+					//Si a gauche c'est bloque, on monte
+					else
+					{
+						this.currentDirection = Const.DIR_TOP;
+					}
+				}
+				else
+				{
+					this.currentDirection = Const.DIR_TOP;
+				}
+				break;
+				
+			case Const.DIR_TOP:
+				if (posY > 1 & posX == 0){
+					if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
+						this.posY--;
+						this.currentDirection = Const.DIR_TOP;
+						return true;
+					}
+					//Si en haut c'est bloque, on va a droite
+					else
+					{
+						this.currentDirection = Const.DIR_RIGHT;
+					}
+				}
+				else
+				{
+					this.currentDirection = Const.DIR_RIGHT;
+				}
+				break;
+				
+			case Const.DIR_BOTTOM:
+				if (posY<Const.NB_MAXTILES-1 ) {
+					if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
+						this.posY++;
+						this.currentDirection = Const.DIR_BOTTOM;
+						return true;
+					}
+					
+					//Si en bas c'est bloque, on va a gauche
+					else
+					{
+						this.currentDirection = Const.DIR_LEFT;
+					}
+				}
+				else
+				{
+					System.out.println("Peux plus aller en bas (limite atteinte)");
+					this.currentDirection = Const.DIR_LEFT;
+				}
+				break;
+				
+			default:
+				break;
+				
+		}
+		*/
+		
+		//dï¿½placement ï¿½ droite
 		if (posX<Const.NB_MAXTILES-1 && posY == 0) {
 			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX++;
+				this.currentDirection = Const.DIR_RIGHT;
 				return true;
 			}
 		}
 		
-		//déplacement en bas
+		//dï¿½placement en bas
 		else if (posX == Const.NB_MAXTILES-1 && posY<Const.NB_MAXTILES-1) {
 			if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
 				this.posY++;
@@ -45,7 +136,7 @@ public class IA extends GameEntity
 			}
 		}
 		
-		//déplacement à gauche
+		//dï¿½placement ï¿½ gauche
 		else if (posX > 0 && posY == Const.NB_MAXTILES-1){
 			if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
 				this.posX--;
@@ -53,7 +144,7 @@ public class IA extends GameEntity
 			}
 		}
 		
-		//déplacement en haut
+		//dï¿½placement en haut
 		else if (posY > 1 & posX == 0){
 			if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
 				this.posY--;

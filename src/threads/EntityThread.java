@@ -11,4 +11,14 @@ import entities.GameEntity;
  */
 public abstract class EntityThread extends Thread{
 	protected GameEntity entity; // entitee controlee dans le thread
+
+	public GameEntity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(GameEntity entity) {
+		this.entity = entity;
+	}
+	
+	
 }

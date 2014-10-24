@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import listeners.IAListener;
 import listeners.PlayerListener;
 import other.Const;
 import other.InteractionClavier;
@@ -26,7 +27,7 @@ import graphics.Tile;
  *
  */
 public class GameEngine {
-	
+
 	private MainWindow window; //reference vers la fenetre du jeu
 	private ArrayList<GameEntity> entities; //liste des joueurs/IAs
 	private Player player; //le joueur
@@ -34,7 +35,7 @@ public class GameEngine {
 	private GamePanel gPanel; // r�f�rence sur la grille de jeu
 	private ArrayList<Tile> coloredTiles; //liste des tuiles colorees par le joueur/les ia
 	private int keyPressedCode = 0;
-	
+
 	/**
 	 * Constructeur de GameEngine
 	 * @param window
@@ -50,12 +51,14 @@ public class GameEngine {
 		this.nbRounds = Const.NB_MAXROUNDS;
 		this.currentRound = 0;
 		this.entities.add(player);
-		
+
 		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
+		this.entities.get(1).setCurrentDirection(Const.DIR_RIGHT);//direction de depart de l'ia 1
+		
 		//this.entities.add(new IA(this.gPanel, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
 		//this.entities.add(new IA(this.gPanel, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
 	}
-	
+
 	/**
 	 * Methode permettant de lancer un round du jeu
 	 * @return success
@@ -63,43 +66,43 @@ public class GameEngine {
 	public boolean startRound()
 	{
 		boolean success = false;
-		
+
 		if(currentRound < nbRounds)
 		{
 			currentRound++;
 			System.out.println("Round "+currentRound+" commence");
-			
+
 			if(currentRound > 1) //si on a joue plus d'un round, on nettoie la grille au nouveau round
 			{
 				window.getGamePanel().cleanGrid(); //réinitialiser la grille
 			}
-			
+
 			//TODO initialisation du round	
-			
-			
+
+
 			//Affichage des joueurs/IA a leur position initiale
 			try 
 			{
 				window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
 				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
 			} 
-			
+
 			catch (GameException e) 
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			play();
 		}
-		
+
 		if(currentRound == nbRounds)
 		{
 			gameOver();
 		}
 		return success;
 	}
-	
+
 	/**
 	 * Methode declenchee a la fin du jeu
 	 * @param gameFinished
@@ -107,64 +110,64 @@ public class GameEngine {
 	public void gameOver()
 	{
 		window.displayGameOverDialog(entities);
-		
+
 	}
-	
+
 	/**
 	 * Methode ou se deroule la boucle principale du jeu
 	 */
 	public void play()
 	{
-		
+
 		GameThread gameThread = new GameThread();
 		gameThread.start();
-		
-		
+
+
 		/*InteractionClavier interaction = new InteractionClavier((Player)entities.get(0));
-		
+
 		window.addKeyListener(interaction);
 		interaction.keyPressed(new KeyEvent(window, 
 							KeyEvent.KEY_PRESSED,
 							(long) 1, 0, KeyEvent.VK_RIGHT,
 							KeyEvent.CHAR_UNDEFINED)); */
-							
-		
+
+
 		//gameOver(); //test fenetre de score
-		
+
 		//TEST
 		//for(int i=1;i<10;i++)
 		//{
-			//entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
-			
-			//A voir si on fait directement paintTile a partir d'ici (plus simple)
-			//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
-			/*try 
+		//entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
+
+		//A voir si on fait directement paintTile a partir d'ici (plus simple)
+		//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
+		/*try 
 			{
 				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
 			} 
-			
+
 			catch (GameException e) 
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} */
 		//}
-		
+
 		/*while (entities.get(1).move(entities.get(1))) {
 			try {
-				
+
 				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
 			}
-		
+
 			catch(GameException e) {
 				e.printStackTrace();
 			}
 		}*/
-			
-			//TEST bouger joueur 1
-			/*for(int i=0; i<50; i++) {
+
+		//TEST bouger joueur 1
+		/*for(int i=0; i<50; i++) {
 				if(entities.get(0).move(entities.get(0),40)) {
-					
+
 					try {
 						window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
 					}
@@ -173,15 +176,15 @@ public class GameEngine {
 					}
 				}
 			}*/
-		
+
 		//for(Tile t : entities.get(0).getTiles())
 		//{
-			//t.setOwner(Const.C_PLAYER); //FIXME pas bon, ça change aussi l'owner sur la tuile de tiles[][]
+		//t.setOwner(Const.C_PLAYER); //FIXME pas bon, ça change aussi l'owner sur la tuile de tiles[][]
 		//}
-			
+
 		//refresh();
 	}
-	
+
 	/**
 	 * Methode qui provoque un rafraichissement de l'image 
 	 * (recupere toutes les tuiles de chaque joueur et les envoie a la window pour colorer)
@@ -190,17 +193,17 @@ public class GameEngine {
 	{
 		//TODO a continuer
 		ArrayList<Tile> updatedTiles = new ArrayList<Tile>();
-		
+
 		//On ajou
 		for(int i=0;i<entities.size();i++)
 		{
 			System.out.println("nb tuile colorees : "+entities.get(i).getTiles().size());
 			updatedTiles.addAll(entities.get(i).getTiles());
 		}
-		
+
 		this.window.getGamePanel().updateData(updatedTiles);
 	}
-	
+
 	/**
 	 * Methode qui reinitialise les donnees du jeu
 	 */
@@ -208,18 +211,18 @@ public class GameEngine {
 	{
 		//reinitialiser la grille
 		window.getGamePanel().cleanGrid();
-		
+
 		//Remise a zero du score
 		for(GameEntity e : entities)
 		{
 			e.setScore(0);
 			e.setStatus(Const.ENT_ALIVE);
 		}
-		
+
 		//remise a zero des rounds
 		this.setNbRounds(0);
 		this.setCurrentRound(0);
-		
+
 	}
 
 
@@ -273,9 +276,9 @@ public class GameEngine {
 	public void setColoredTiles(ArrayList<Tile> coloredTiles) {
 		this.coloredTiles = coloredTiles;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Classe interne GameThread
 	 * @author Yannis M'RAD, Vincent AUNAI
@@ -289,7 +292,7 @@ public class GameEngine {
 		private IAThread tIA1, tIA2, tIA3; //thread associes aux IA
 		private PlayerListener playerListener;
 		private InteractionClavier interaction;
-		
+
 		/**
 		 * Constructeur de GameThread
 		 */
@@ -300,8 +303,8 @@ public class GameEngine {
 			this.tIA1 = new IAThread((IA) GameEngine.this.getEntities().get(1));
 			//this.tIA2 = new IAThread((IA) GameEngine.this.getEntities().get(2));
 			//this.tIA3 = new IAThread((IA) GameEngine.this.getEntities().get(3));
-			
-			
+
+
 			/* Creation d'une interaction clavier pour le joueur */
 			if(this.interaction == null)
 			{
@@ -309,11 +312,44 @@ public class GameEngine {
 				window.getGamePanel().addKeyListener(interaction);
 				playerThread.setInteraction(interaction);
 			}
+
+			setPlayerListener();
+			setIAListener(tIA1);
+		}
+
+		/**
+		 * Methode run
+		 */
+		public void run()
+		{
+			boolean runLoop = true;
 			
-			/*Definition des methodes du player listener pour repercuter les modifications
-			sur le GamePanel */
-			
-			//FIXME inutile ?
+			while(runLoop)
+			{
+				//playerThread.run();
+				tIA1.run();
+
+
+				try {
+					window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
+					//playerThread.sleep(50);
+					tIA1.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch(GameException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		/**
+		 * Definition des methodes du player listener pour repercuter les modifications
+		 * sur le GamePanel 
+		 */
+		public void setPlayerListener()
+		{
 			playerThread.setPlayerListener(new PlayerListener(){
 
 				@Override
@@ -344,37 +380,44 @@ public class GameEngine {
 			});
 		}
 		
-		/**
-		 * Methode run
-		 */
-		public void run()
+		public void setIAListener(final IAThread iaThread)
 		{
-			boolean runLoop = true;
+			iaThread.setIAListener(new IAListener(){
 
-			
-			while(runLoop)
-			{
-				//playerThread.run();
-				tIA1.run();
-				
-				
-				try {
-					window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-					//playerThread.sleep(50);
-					tIA1.sleep(50);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				@Override
+				public void onDirectionChanged(int newDirection) {
+					
+					
 				}
-				catch(GameException e) {
-					e.printStackTrace();
+
+				@Override
+				public void onIADeath() {
+					// TODO Auto-generated method stub
+					
 				}
-			}
+				
+				//Si le joueur s'est deplace, colorer la tuile ou il vient de passer
+				@Override
+				public void hasMoved() {
+					try 
+					{
+						window.getGamePanel().paintTile(iaThread.getEntity().getPosX(), iaThread.getEntity().getPosY(), iaThread.getEntity().getOwnerCode());
+					}
+					catch(GameException e) 
+					{
+						System.out.println(e.getMessage());
+					}		
+				}
+				
+			});
 		}
+		
+		
+		
 	}
 
-	
-	
-	
+
+
+
 
 }
