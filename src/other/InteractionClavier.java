@@ -37,7 +37,7 @@ public class InteractionClavier implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		keyIsPressed = false;
+		//keyIsPressed = false;
 
 	}
 

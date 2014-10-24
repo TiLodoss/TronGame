@@ -297,7 +297,7 @@ public class GameEngine {
 		{
 			gameEngine = GameEngine.this;
 			playerThread = new PlayerThread(GameEngine.this.getPlayer());
-			//this.tIA1 = new IAThread((IA) GameEngine.this.getEntities().get(1));
+			this.tIA1 = new IAThread((IA) GameEngine.this.getEntities().get(1));
 			//this.tIA2 = new IAThread((IA) GameEngine.this.getEntities().get(2));
 			//this.tIA3 = new IAThread((IA) GameEngine.this.getEntities().get(3));
 			
@@ -318,7 +318,7 @@ public class GameEngine {
 
 				@Override
 				public void onDirectionChanged(int newDirection) {
-					// TODO Auto-generated method stub
+					
 					
 				}
 
@@ -355,10 +355,18 @@ public class GameEngine {
 			while(runLoop)
 			{
 				playerThread.run();
+				tIA1.run();
+				
+				
 				try {
-					playerThread.sleep(1000);
+					window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
+					playerThread.sleep(50);
+					tIA1.sleep(50);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch(GameException e) {
 					e.printStackTrace();
 				}
 			}

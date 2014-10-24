@@ -1,5 +1,6 @@
 package threads;
 
+import other.Const;
 import entities.IA;
 import entities.Player;
 
@@ -25,6 +26,8 @@ public class IAThread extends EntityThread{
 	@Override
 	public void run()
 	{
+		entity.move(entity);
+		
 		System.out.println("playeeeee");
 	}
 
