@@ -26,9 +26,13 @@ public class IAThread extends EntityThread{
 	@Override
 	public void run()
 	{
-		entity.move(entity);
+		if(!entity.collides()) {
+			entity.move(entity);
+		}
 		
-		System.out.println("playeeeee");
+		else {
+			System.out.println("IA morte");
+		}
 	}
 
 

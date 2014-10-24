@@ -17,19 +17,18 @@ public class IA extends GameEntity
 {
 	//private int diffLvl; //niveau de difficultï¿½
 	private GamePanel gPanel;
+	private Tile[][] tiles;
 	
 	public IA(GamePanel panel, int lvl, int ownerCodeIA, int x, int y)
 	{
 		gPanel = panel;
-		//diffLvl = lvl;
+		tiles = gPanel.getTiles();
 		ownerCode = ownerCodeIA;
 		posX = x;
 		posY = y;
 	}
 	
 	public boolean deplacerSpirale() {
-		Tile[][] tiles = gPanel.getTiles();
-
 		//déplacement à droite
 		if (posX<Const.NB_MAXTILES-1 && posY == 0) {
 			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
@@ -77,6 +76,10 @@ public class IA extends GameEntity
 	@Override
 	public boolean collides() {
 		// TODO Auto-generated method stub
+		if ((tiles[this.posX][this.posY].getOwner() != Const.C_NONE) 
+				&& this.posX != 0
+				&& this.posY != 0) return true;
+		
 		return false;
 	}
 
