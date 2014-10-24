@@ -33,27 +33,31 @@ public class Player extends GameEntity
 		
 		if (entity.getOwnerCode() == Const.C_PLAYER) {
 			switch (direction) {
-				case 37: //gauche
+				case Const.DIR_LEFT: //gauche
 					if(tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
 						this.posX--;
+						this.currentDirection = Const.DIR_LEFT;
 						return true;
 					}
 				
-				case 39: //droite
+				case Const.DIR_RIGHT: //droite
 					if(tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
 						this.posX++;
+						this.currentDirection = Const.DIR_RIGHT;
 						return true;
 					}
 					
-				case 40: //bas
+				case Const.DIR_BOTTOM: //bas
 					if(tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
 						this.posY++;
+						this.currentDirection = Const.DIR_BOTTOM;
 						return true;
 					}
 					
-				case 38: //haut
+				case Const.DIR_TOP: //haut
 					if(tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
 						this.posY--;
+						this.currentDirection = Const.DIR_TOP;
 						return true;
 					}
 				default: return false;

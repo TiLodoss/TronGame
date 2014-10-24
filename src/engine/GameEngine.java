@@ -5,8 +5,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import listeners.PlayerListener;
 import other.Const;
 import other.InteractionClavier;
+import threads.IAThread;
+import threads.PlayerThread;
 import entities.GameEntity;
 import entities.IA;
 import entities.Player;
@@ -43,6 +46,7 @@ public class GameEngine {
 		this.entities = new ArrayList<GameEntity>();
 		this.coloredTiles = new ArrayList<Tile>();
 		this.player = new Player(gPanel, 10, 10);
+		this.player.setCurrentDirection(Const.DIR_RIGHT);
 		this.nbRounds = Const.NB_MAXROUNDS;
 		this.currentRound = 0;
 		this.entities.add(player);
@@ -85,6 +89,8 @@ public class GameEngine {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			play();
 		}
 		
 		if(currentRound == nbRounds)
@@ -105,17 +111,23 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Methode ou se deroule l'action du jeu
+	 * Methode ou se deroule la boucle principale du jeu
 	 */
 	public void play()
 	{
-		InteractionClavier interaction = new InteractionClavier((Player)entities.get(0));
+		
+		GameThread gameThread = new GameThread();
+		gameThread.start();
+		
+		
+		/*InteractionClavier interaction = new InteractionClavier((Player)entities.get(0));
 		
 		window.addKeyListener(interaction);
 		interaction.keyPressed(new KeyEvent(window, 
 							KeyEvent.KEY_PRESSED,
 							(long) 1, 0, KeyEvent.VK_RIGHT,
-							KeyEvent.CHAR_UNDEFINED));
+							KeyEvent.CHAR_UNDEFINED)); */
+							
 		
 		//gameOver(); //test fenetre de score
 		
@@ -150,7 +162,7 @@ public class GameEngine {
 		}*/
 			
 			//TEST bouger joueur 1
-			for(int i=0; i<50; i++) {
+			/*for(int i=0; i<50; i++) {
 				if(entities.get(0).move(entities.get(0),40)) {
 					
 					try {
@@ -160,14 +172,14 @@ public class GameEngine {
 						e.printStackTrace();
 					}
 				}
-			}
+			}*/
 		
 		//for(Tile t : entities.get(0).getTiles())
 		//{
 			//t.setOwner(Const.C_PLAYER); //FIXME pas bon, ça change aussi l'owner sur la tuile de tiles[][]
 		//}
 			
-		refresh();
+		//refresh();
 	}
 	
 	/**
@@ -261,6 +273,98 @@ public class GameEngine {
 	public void setColoredTiles(ArrayList<Tile> coloredTiles) {
 		this.coloredTiles = coloredTiles;
 	}
+	
+	
+	
+	/**
+	 * Classe interne GameThread
+	 * @author Yannis M'RAD, Vincent AUNAI
+	 * 
+	 * Thread gerant la boucle principale du jeu
+	 *
+	 */
+	private class GameThread extends Thread{
+		private GameEngine gameEngine;
+		private PlayerThread playerThread; //thread associe au joueur
+		private IAThread tIA1, tIA2, tIA3; //thread associes aux IA
+		private PlayerListener playerListener;
+		private InteractionClavier interaction;
+		
+		/**
+		 * Constructeur de GameThread
+		 */
+		public GameThread()
+		{
+			gameEngine = GameEngine.this;
+			playerThread = new PlayerThread(GameEngine.this.getPlayer());
+			//this.tIA1 = new IAThread((IA) GameEngine.this.getEntities().get(1));
+			//this.tIA2 = new IAThread((IA) GameEngine.this.getEntities().get(2));
+			//this.tIA3 = new IAThread((IA) GameEngine.this.getEntities().get(3));
+			
+			
+			/* Creation d'une interaction clavier pour le joueur */
+			if(this.interaction == null)
+			{
+				interaction = new InteractionClavier((Player)entities.get(0));
+				window.getGamePanel().addKeyListener(interaction);
+				playerThread.setInteraction(interaction);
+			}
+			
+			/*Definition des methodes du player listener pour repercuter les modifications
+			sur le GamePanel */
+			
+			//FIXME inutile ?
+			playerThread.setPlayerListener(new PlayerListener(){
+
+				@Override
+				public void onDirectionChanged(int newDirection) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onPlayerDeath() {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				//Si le joueur s'est deplace, colorer la tuile ou il vient de passer
+				@Override
+				public void hasMoved() {
+					try 
+					{
+						window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
+					}
+					catch(GameException e) 
+					{
+						e.printStackTrace();
+					}		
+				}
+				
+			});
+		}
+		
+		/**
+		 * Methode run
+		 */
+		public void run()
+		{
+			boolean runLoop = true;
+
+			
+			while(runLoop)
+			{
+				playerThread.run();
+				try {
+					playerThread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	
 	
 	

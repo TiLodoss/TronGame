@@ -22,9 +22,10 @@ public class IAThread extends EntityThread{
 	/**
 	 * Methode run
 	 */
+	@Override
 	public void run()
 	{
-		
+		System.out.println("playeeeee");
 	}
 
 

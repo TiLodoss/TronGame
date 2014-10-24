@@ -131,8 +131,9 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				engine.startRound();
-				
+				engine.startRound();	
+				gamePanel.requestFocusInWindow();
+				//play.setEnabled(false);
 			}
 			
 		});

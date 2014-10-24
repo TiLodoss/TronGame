@@ -18,6 +18,7 @@ public abstract class GameEntity {
 	protected int score; //score du joueur ou de l'ia
 	protected int status; //statut (vivant ou mort)
 	protected int posX, posY; // position du joueur ou de l'ia
+	protected int currentDirection;
 	
 	protected ArrayList<Tile> tiles; //ensemble des tuiles appartenant a l'entite
 	protected Tile currentTile; //tuile ou se trouve actuellement l'entite
@@ -81,4 +82,12 @@ public abstract class GameEntity {
 	public void setOwnerCode(int ownerCode) {
 		this.ownerCode = ownerCode;
 	}
+	public int getCurrentDirection() {
+		return currentDirection;
+	}
+	public void setCurrentDirection(int currentDirection) {
+		this.currentDirection = currentDirection;
+	}
+	
+	
 }

@@ -44,6 +44,7 @@ public class GamePanel extends JPanel{
 		this.setLayout(gridLayout);
 		setBackground(Color.LIGHT_GRAY);
 		this.setPreferredSize(new Dimension(100,100));
+		this.setFocusable(true);
 		initGrid(size);
 	}
 
