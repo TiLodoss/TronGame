@@ -20,6 +20,10 @@ public class IA extends GameEntity
 	//private int diffLvl; //niveau de difficult�
 	private GamePanel gPanel;
 	private Tile[][] tiles;
+	int compteur = 0; //compteur pour garder une direction
+	Random randDirection = new Random();
+	int direction = randDirection.nextInt(4);//direction choisie au hasard
+	boolean gauchePossible, droitePossible, hautPossible, basPossible;
 	
 	public IA(GamePanel panel, int lvl, int ownerCodeIA, int x, int y)
 	{
@@ -28,6 +32,10 @@ public class IA extends GameEntity
 		ownerCode = ownerCodeIA;
 		posX = x;
 		posY = y;
+		gauchePossible = true;
+		droitePossible = true;
+		hautPossible = true;
+		basPossible = true;
 	}
 	
 	public boolean deplacerSpirale() {	
@@ -66,50 +74,89 @@ public class IA extends GameEntity
 		return false;
 	}
 	
-	public boolean deplacerAleatoire() {
+	public boolean deplacerAleatoire(int direction) {
 		Random randDirection = new Random();
-		int direction = randDirection.nextInt(4);
 		
 		switch(direction) {
 			// deplacement gauche
-			case 0: 
-				if (this.posX > 0 /*&& this.posY == Const.NB_MAXTILES-1*/){
-					this.posX--;
-					if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
-						return true;
+			case Const.DIR_LEFT:
+				if (this.posX > 0){
+					if (gauchePossible) {
+						if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
+							this.posX--;
+							droitePossible = false;
+							basPossible = true;
+							hautPossible = true;
+							return true;
+						}
 					}
-				}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}			
 				
 				else return false;
 			
 			// deplacement droite
-			case 1: 
-				if (this.posX<Const.NB_MAXTILES-1 /*&& this.posY == 0*/) {
-					if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
-						this.posX++;
-						return true;
+			case Const.DIR_RIGHT:				
+				if (this.posX<Const.NB_MAXTILES-1) {
+					if (droitePossible) {
+						if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
+							this.posX++;
+							gauchePossible = false;
+							hautPossible = true;
+							basPossible = true;
+							return true;
+						}
 					}
-				}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}	
 				
 				else return false;
 			
 			// deplacement haut
-			case 2: 
-				if (this.posY > 0 /*&& this.posX == 0*/){
-					this.posY--;
-					if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
-						return true;
+			case Const.DIR_TOP:				
+				if (this.posY > 0){
+					if (hautPossible) {
+						if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
+							this.posY--;
+							basPossible = false;
+							gauchePossible = true;
+							droitePossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
 					}
 				}
 				
 				else return false;
 			
 			// deplacement bas
-			case 3: 				
-				if (/*this.posX == Const.NB_MAXTILES-1 &&*/ this.posY<Const.NB_MAXTILES-1) {
-					if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
-						this.posY++;
-						return true;
+			case Const.DIR_BOTTOM:				
+				if (this.posY<Const.NB_MAXTILES-1) {
+					if (basPossible) {
+						if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
+							this.posY++;
+							hautPossible = false;
+							gauchePossible = true;
+							droitePossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
 					}
 				}
 				
@@ -143,7 +190,7 @@ public class IA extends GameEntity
 		if(entity.getStatus() == Const.ENT_DEAD) return false;
 		switch(entity.getOwnerCode()) {
 			case Const.C_IA1: return deplacerSpirale();
-			case Const.C_IA2: return deplacerAleatoire();
+			case Const.C_IA2: return deplacerAleatoire(direction);
 			case Const.C_IA3: return suivreJoueur();
 		}
 		
@@ -152,7 +199,16 @@ public class IA extends GameEntity
 	
 	public boolean move(GameEntity entity) {
 		// TODO Auto-generated method stub
-		return move(entity, 0);
+		if (compteur != 5) {
+			compteur++;
+			return move(entity, direction);
+		}
+		
+		else {
+			compteur = 0;
+			direction = randDirection.nextInt(4);
+			return move(entity, direction);
+		}
 	}
 
 }
