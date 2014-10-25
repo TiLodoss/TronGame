@@ -69,24 +69,6 @@ public class GamePanel extends JPanel{
 				this.add(tilePanel);
 			}
 		}
-		
-		//Test
-		/*try
-		{
-			paintTile(0,10, 0);
-			paintTile(1,10, 0);
-			paintTile(2,10, 0);
-			paintTile(3,10, 0);
-			paintTile(4,10, 0);
-			paintTile(0,50, 1);
-			paintTile(0,20, 3);
-		}
-		
-		catch(GameException e)
-		{
-			System.out.println(e.getMessage());
-		} */
-		
 	}
 	
 	/**

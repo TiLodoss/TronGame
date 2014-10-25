@@ -167,7 +167,11 @@ public class IA extends GameEntity
 	public boolean collides() {
 		// TODO Auto-generated method stub
 		if (this.posX == 0 && this.posY == 0) return false;
-		else if ((tiles[this.posX][this.posY].getOwner() != Const.C_NONE)) return true;
+		else if ((tiles[this.posX][this.posY].getOwner() != Const.C_NONE))
+		{
+			this.setStatus(Const.ENT_DEAD);
+			return true;
+		}
 		
 		return false;
 	}
@@ -175,6 +179,8 @@ public class IA extends GameEntity
 	@Override
 	public boolean move(GameEntity entity, int direction) {
 		// TODO Auto-generated method stub
+		
+		if(entity.getStatus() == Const.ENT_DEAD) return false;
 		switch(entity.getOwnerCode()) {
 			case Const.C_IA1: return deplacerSpirale();
 		}

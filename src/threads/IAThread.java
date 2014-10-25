@@ -29,12 +29,22 @@ public class IAThread extends EntityThread{
 	public void run()
 	{
 		//if(!entity.collides()) {
-			entity.move(entity);
-			//iaListener.hasMoved();
+			if(entity.getStatus() == Const.ENT_ALIVE)
+			{
+				entity.move(entity);
+				iaListener.hasMoved();
+			}
+			
+			/*else
+			{
+				System.out.println("fin du thread ia");
+				this.stop();
+			} */
+			
 		//}
 		
 		//else {
-			System.out.println("IA morte");
+			//System.out.println("IA morte");
 			
 		//}
 	}

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+import other.Const;
 import engine.GameEngine;
 import entities.GameEntity;
 import exceptions.GameException;
@@ -147,6 +148,31 @@ public class MainWindow extends JFrame {
 			play.setEnabled(true); //bouton cliquable apres le chargement
 		}
 
+	}
+	
+	/**
+	 * Methode de mise a jour du score affiche pour un joueur
+	 */
+	public void updateEntityScore(int ownerCode, int score)
+	{
+		switch(ownerCode)
+		{
+			case Const.C_PLAYER:
+				scorePlayer.setText(score+"");
+				break;
+				
+			case Const.C_IA1:
+				scoreIA1.setText(score+"");
+				break;
+				
+			case Const.C_IA2:
+				scoreIA2.setText(score+"");
+				break;
+				
+			case Const.C_IA3:
+				scoreIA3.setText(score+"");
+				break;
+		}
 	}
 	
 	/**

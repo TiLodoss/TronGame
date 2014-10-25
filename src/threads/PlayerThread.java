@@ -32,40 +32,43 @@ public class PlayerThread extends EntityThread{
 	@Override
 	public void run()
 	{
-		//Deplacer le joueur dans une direction apres appui sur une touche
-		if(interaction.isKeyPressed())
+		if(entity.getStatus() == Const.ENT_ALIVE)
 		{
-			//TODO envoyer plutot une Const.Direction en param
-			entity.move(entity, interaction.getKeyPressedCode()); 	
-			
-			switch(interaction.getKeyPressedCode())
+			//Deplacer le joueur dans une direction apres appui sur une touche
+			if(interaction.isKeyPressed())
 			{
-				case 37:
-					entity.move(entity, Const.DIR_LEFT); 
-					break;
-					
-				case 38:
-					entity.move(entity, Const.DIR_TOP);  
-					break;
-					
-				case 39:
-					entity.move(entity, Const.DIR_RIGHT); 
-					break;
-					
-				case 40:
-					entity.move(entity, Const.DIR_BOTTOM); 
-					break;
-					
+				//TODO envoyer plutot une Const.Direction en param
+				entity.move(entity, interaction.getKeyPressedCode()); 	
+				
+				switch(interaction.getKeyPressedCode())
+				{
+					case 37:
+						entity.move(entity, Const.DIR_LEFT); 
+						break;
+						
+					case 38:
+						entity.move(entity, Const.DIR_TOP);  
+						break;
+						
+					case 39:
+						entity.move(entity, Const.DIR_RIGHT); 
+						break;
+						
+					case 40:
+						entity.move(entity, Const.DIR_BOTTOM); 
+						break;
+						
+				}
 			}
+			
+			//Pas de touche appuyee, deplacer le joueur dans sa direction actuelle
+			else
+			{
+				entity.move(entity, entity.getCurrentDirection()); 
+			}
+			
+			playerListener.hasMoved();
 		}
-		
-		//Pas de touche appuyee, deplacer le joueur dans sa direction actuelle
-		else
-		{
-			entity.move(entity, entity.getCurrentDirection()); 
-		}
-		
-		playerListener.hasMoved();
 	}
 
 	public PlayerListener getPlayerListener() {
