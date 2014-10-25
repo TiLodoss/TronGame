@@ -36,7 +36,7 @@ public class Player extends GameEntity
 				case Const.DIR_LEFT: //gauche
 					if(this.posX>0)
 					{
-						if(tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
+						if(tiles[this.posY][this.posX-1].getOwner() == Const.C_NONE) {
 							this.posX--;
 							this.currentDirection = Const.DIR_LEFT;
 							return true;
@@ -53,7 +53,7 @@ public class Player extends GameEntity
 				case Const.DIR_RIGHT: //droite
 					if(this.posX<Const.NB_MAXTILES-1)
 					{
-						if(tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
+						if(tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
 							this.posX++;
 							this.currentDirection = Const.DIR_RIGHT;
 							return true;
@@ -70,7 +70,7 @@ public class Player extends GameEntity
 				case Const.DIR_BOTTOM: //bas
 					if(this.posY<Const.NB_MAXTILES-1)
 					{
-						if(tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
+						if(tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY++;
 							this.currentDirection = Const.DIR_BOTTOM;
 							return true;
@@ -87,7 +87,7 @@ public class Player extends GameEntity
 				case Const.DIR_TOP: //haut
 					if(this.posY>0)
 					{
-						if(tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
+						if(tiles[this.posY-1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY--;
 							this.currentDirection = Const.DIR_TOP;
 							return true;

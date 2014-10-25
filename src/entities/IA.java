@@ -41,7 +41,7 @@ public class IA extends GameEntity
 	public boolean deplacerSpirale() {	
 		//d�placement � droite
 		if (this.posX<Const.NB_MAXTILES-1 && this.posY == 0) {
-			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
+			if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
 				this.posX++;
 				return true;
 			}
@@ -49,7 +49,7 @@ public class IA extends GameEntity
 		
 		//d�placement en bas
 		else if (this.posX == Const.NB_MAXTILES-1 && this.posY<Const.NB_MAXTILES-1) {
-			if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
+			if (tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
 				this.posY++;
 				return true;
 			}
@@ -58,7 +58,7 @@ public class IA extends GameEntity
 		//d�placement � gauche
 		else if (this.posX > 0 && this.posY == Const.NB_MAXTILES-1){
 			this.posX--;
-			if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
+			if (tiles[this.posY][this.posX].getOwner() == Const.C_NONE) {
 				return true;
 			}
 		}
@@ -66,7 +66,7 @@ public class IA extends GameEntity
 		//d�placement en haut
 		else if (this.posY > 0 && this.posX == 0){
 			this.posY--;
-			if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
+			if (tiles[this.posY][this.posX].getOwner() == Const.C_NONE) {
 				return true;
 			}
 		}
@@ -82,7 +82,7 @@ public class IA extends GameEntity
 			case Const.DIR_LEFT:
 				if (this.posX > 0){
 					if (gauchePossible) {
-						if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
+						if (tiles[this.posY][this.posX-1].getOwner() == Const.C_NONE) {
 							this.posX--;
 							droitePossible = false;
 							basPossible = true;
@@ -103,7 +103,7 @@ public class IA extends GameEntity
 			case Const.DIR_RIGHT:				
 				if (this.posX<Const.NB_MAXTILES-1) {
 					if (droitePossible) {
-						if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
+						if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
 							this.posX++;
 							gauchePossible = false;
 							hautPossible = true;
@@ -124,7 +124,7 @@ public class IA extends GameEntity
 			case Const.DIR_TOP:				
 				if (this.posY > 0){
 					if (hautPossible) {
-						if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
+						if (tiles[this.posY-1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY--;
 							basPossible = false;
 							gauchePossible = true;
@@ -145,7 +145,7 @@ public class IA extends GameEntity
 			case Const.DIR_BOTTOM:				
 				if (this.posY<Const.NB_MAXTILES-1) {
 					if (basPossible) {
-						if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
+						if (tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY++;
 							hautPossible = false;
 							gauchePossible = true;
@@ -174,7 +174,7 @@ public class IA extends GameEntity
 	public boolean collides() {
 		// TODO Auto-generated method stub
 		if (this.posX == 0 && this.posY == 0) return false;
-		else if ((tiles[this.posX][this.posY].getOwner() != Const.C_NONE))
+		else if ((tiles[this.posY][this.posX].getOwner() != Const.C_NONE))
 		{
 			this.setStatus(Const.ENT_DEAD);
 			return true;
