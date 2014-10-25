@@ -134,7 +134,7 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				engine.startRound();	
 				gamePanel.requestFocusInWindow();
-				//play.setEnabled(false);
+				disablePlayButton();
 			}
 			
 		});
@@ -148,6 +148,24 @@ public class MainWindow extends JFrame {
 			play.setEnabled(true); //bouton cliquable apres le chargement
 		}
 
+	}
+	
+	/**
+	 * Methode pour rendre le bouton play inactif
+	 */
+	public void disablePlayButton()
+	{
+		if(play.isEnabled())
+			play.setEnabled(false);
+	}
+	
+	/**
+	 * Methode pour rendre le bouton play actif
+	 */
+	public void enablePlayButton()
+	{
+		if(!play.isEnabled())
+			play.setEnabled(true);
 	}
 	
 	/**

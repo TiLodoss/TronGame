@@ -11,5 +11,6 @@ public interface PlayerListener {
 	public void hasMoved();
 	public void onDirectionChanged(int newDirection);
 	public void onPlayerDeath();
+	public void statusChanged();
 
 }

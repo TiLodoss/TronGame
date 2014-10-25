@@ -72,7 +72,7 @@ public class GameEngine {
 			currentRound++;
 			System.out.println("Round "+currentRound+" commence");
 
-			if(currentRound > 1) //si on a joue plus d'un round, on nettoie la grille au nouveau round
+			if(currentRound > 1)
 			{
 				
 				//Repositionnement des entites
@@ -125,7 +125,6 @@ public class GameEngine {
 	public void gameOver()
 	{
 		window.displayGameOverDialog(entities);
-
 	}
 	
 	/**
@@ -149,13 +148,13 @@ public class GameEngine {
 	 */
 	public void calculateScore()
 	{
-		for(GameEntity e : entities)
+		entLoop : for(GameEntity e : entities)
 		{
 			if(e.getStatus() == Const.ENT_ALIVE)
 			{
 				e.setScore(e.getScore()+1);
 				window.updateEntityScore(e.getOwnerCode(), e.getScore());
-				break;
+				break entLoop;
 			}
 		}
 	}
@@ -391,9 +390,9 @@ public class GameEngine {
 
 				try {
 					//window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-					playerThread.sleep(50);
-					tIA1.sleep(50);
-					tIA2.sleep(50);
+					playerThread.sleep(10);
+					tIA1.sleep(10);
+					tIA2.sleep(10);
 					//tIA3.sleep(50);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -430,21 +429,23 @@ public class GameEngine {
 					{
 						window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
 					}
-					catch(GameException e) 
+					catch(GameException e) //Si paintTile retourne une exception : collision du joueur
 					{
 						System.out.println(e.getMessage());
 						onPlayerDeath();
+						statusChanged();
+					}		
+				}
+
+				@Override
+				public void statusChanged() {
+					if(playerThread.getEntity().getStatus() == Const.ENT_DEAD)
+					{
 						playerThread.stop();
 						
 						//Après mort du joueur, verifier s'il reste 1 survivant (fin du round)
-						if(entitiesAlive() == 1)
-						{
-							calculateScore();
-							stopAllThreads();
-							GameThread.this.interrupt();
-							startRound(); //demarrer le round suivant si possible	
-						}
-					}		
+						checkEndGame();
+					}	
 				}
 				
 			});
@@ -459,6 +460,20 @@ public class GameEngine {
 			if(tIA1.isAlive()) tIA1.stop();
 			if(tIA2.isAlive()) tIA2.stop();
 			if(tIA3.isAlive()) tIA3.stop();
+		}
+		
+		/**
+		 * Methode qui verifie s'il reste 1 survivant, auquel cas un round se termine
+		 */
+		public void checkEndGame()
+		{
+			if(entitiesAlive() == 1)
+			{
+				calculateScore();
+				stopAllThreads();
+				GameThread.this.stop();
+				window.enablePlayButton();
+			}
 		}
 		
 		public void setIAListener(final IAThread iaThread)
@@ -478,13 +493,7 @@ public class GameEngine {
 					iaThread.stop();
 					
 					//Apres mort de l'ia, verifier s'il reste 1 survivant
-					if(entitiesAlive() == 1)
-					{
-						calculateScore();
-						stopAllThreads();
-						GameThread.this.interrupt();
-						startRound();
-					}
+					checkEndGame();
 					
 				}
 				

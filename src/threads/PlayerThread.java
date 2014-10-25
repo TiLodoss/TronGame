@@ -69,6 +69,12 @@ public class PlayerThread extends EntityThread{
 			
 			playerListener.hasMoved();
 		}
+		
+		//Si le statut est different de ENT_ALIVE c'est qu'il a ete modifie dans move() de l'entite
+		else
+		{
+			playerListener.statusChanged();
+		}
 	}
 
 	public PlayerListener getPlayerListener() {
