@@ -2,6 +2,8 @@ package entities;
 
 //import java.awt.Color;
 
+import java.util.Random;
+
 import other.Const;
 import graphics.GamePanel;
 import graphics.Tile;
@@ -28,97 +30,7 @@ public class IA extends GameEntity
 		posY = y;
 	}
 	
-	public boolean deplacerSpirale() {
-		
-		/*switch(this.currentDirection)
-		{
-			case Const.DIR_RIGHT:
-				if (posX<Const.NB_MAXTILES-1) {
-					if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
-						this.posX++;
-						this.currentDirection = Const.DIR_RIGHT;
-						return true;
-					}
-					
-					//Si a droite c'est bloque, on descend
-					else
-					{
-						this.currentDirection = Const.DIR_BOTTOM;
-					}
-				}
-				
-				else
-				{
-					this.currentDirection = Const.DIR_BOTTOM;
-				}
-				break;
-				
-			case Const.DIR_LEFT:
-				if (posX > 0){
-					if (tiles[this.posX-1][this.posY].getOwner() == Const.C_NONE) {
-						this.posX--;
-						this.currentDirection = Const.DIR_LEFT;
-						return true;
-					}
-					
-					//Si a gauche c'est bloque, on monte
-					else
-					{
-						this.currentDirection = Const.DIR_TOP;
-					}
-				}
-				else
-				{
-					this.currentDirection = Const.DIR_TOP;
-				}
-				break;
-				
-			case Const.DIR_TOP:
-				if (posY > 1 & posX == 0){
-					if (tiles[this.posX][this.posY-1].getOwner() == Const.C_NONE) {
-						this.posY--;
-						this.currentDirection = Const.DIR_TOP;
-						return true;
-					}
-					//Si en haut c'est bloque, on va a droite
-					else
-					{
-						this.currentDirection = Const.DIR_RIGHT;
-					}
-				}
-				else
-				{
-					this.currentDirection = Const.DIR_RIGHT;
-				}
-				break;
-				
-			case Const.DIR_BOTTOM:
-				if (posY<Const.NB_MAXTILES-1 ) {
-					if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
-						this.posY++;
-						this.currentDirection = Const.DIR_BOTTOM;
-						return true;
-					}
-					
-					//Si en bas c'est bloque, on va a gauche
-					else
-					{
-						this.currentDirection = Const.DIR_LEFT;
-					}
-				}
-				else
-				{
-					System.out.println("Peux plus aller en bas (limite atteinte)");
-					this.currentDirection = Const.DIR_LEFT;
-				}
-				break;
-				
-			default:
-				break;
-				
-		}
-		*/
-		
+	public boolean deplacerSpirale() {	
 		//d�placement � droite
 		if (this.posX<Const.NB_MAXTILES-1 && this.posY == 0) {
 			if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
@@ -155,6 +67,54 @@ public class IA extends GameEntity
 	}
 	
 	public boolean deplacerAleatoire() {
+		Random randDirection = new Random();
+		int direction = randDirection.nextInt(4);
+		
+		switch(direction) {
+			// deplacement gauche
+			case 0: 
+				if (this.posX > 0 /*&& this.posY == Const.NB_MAXTILES-1*/){
+					this.posX--;
+					if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
+						return true;
+					}
+				}
+				
+				else return false;
+			
+			// deplacement droite
+			case 1: 
+				if (this.posX<Const.NB_MAXTILES-1 /*&& this.posY == 0*/) {
+					if (tiles[this.posX+1][this.posY].getOwner() == Const.C_NONE) {
+						this.posX++;
+						return true;
+					}
+				}
+				
+				else return false;
+			
+			// deplacement haut
+			case 2: 
+				if (this.posY > 0 /*&& this.posX == 0*/){
+					this.posY--;
+					if (tiles[this.posX][this.posY].getOwner() == Const.C_NONE) {
+						return true;
+					}
+				}
+				
+				else return false;
+			
+			// deplacement bas
+			case 3: 				
+				if (/*this.posX == Const.NB_MAXTILES-1 &&*/ this.posY<Const.NB_MAXTILES-1) {
+					if (tiles[this.posX][this.posY+1].getOwner() == Const.C_NONE) {
+						this.posY++;
+						return true;
+					}
+				}
+				
+				else return false;
+		}
 		return false;
 	}
 	
@@ -183,6 +143,8 @@ public class IA extends GameEntity
 		if(entity.getStatus() == Const.ENT_DEAD) return false;
 		switch(entity.getOwnerCode()) {
 			case Const.C_IA1: return deplacerSpirale();
+			case Const.C_IA2: return deplacerAleatoire();
+			case Const.C_IA3: return suivreJoueur();
 		}
 		
 		return false;
