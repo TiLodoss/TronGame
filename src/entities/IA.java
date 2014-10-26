@@ -25,6 +25,7 @@ public class IA extends GameEntity
 	private int compteur = 0; //compteur pour garder une direction
 	private Random randDirection = new Random();
 	private int direction = randDirection.nextInt(4);//direction choisie au hasard
+	private int tourSpirale = 0;
 	
 	
 	private static class DeplacementsPossiblesIA2 {
@@ -51,35 +52,42 @@ public class IA extends GameEntity
 		posY = y;
 	}
 	
-	public boolean deplacerSpirale() {	
+	public boolean deplacerSpirale() {
 		//d�placement � droite
-		if (this.posX<Const.NB_MAXTILES-1 && this.posY == 0) {
-			if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
+		if (this.posX<Const.NB_MAXTILES-(tourSpirale+1) && this.posY == tourSpirale) {
+			if (tiles[this.posY+tourSpirale][this.posX+1].getOwner() == Const.C_NONE) {
 				this.posX++;
 				return true;
 			}
 		}
 		
 		//d�placement en bas
-		else if (this.posX == Const.NB_MAXTILES-1 && this.posY<Const.NB_MAXTILES-1) {
-			if (tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
+		else if (this.posX == (Const.NB_MAXTILES-(tourSpirale+1)) && this.posY<Const.NB_MAXTILES-(tourSpirale+1)) {
+			if (tiles[this.posY+1][this.posX-tourSpirale].getOwner() == Const.C_NONE) {
 				this.posY++;
 				return true;
 			}
 		}
 		
 		//d�placement � gauche
-		else if (this.posX > 0 && this.posY == Const.NB_MAXTILES-1){
+		else if (this.posX > (0+tourSpirale) && this.posY == (Const.NB_MAXTILES-(tourSpirale+1))){
 			this.posX--;
-			if (tiles[this.posY][this.posX].getOwner() == Const.C_NONE) {
+			if (tiles[this.posY-tourSpirale][this.posX].getOwner() == Const.C_NONE) {
 				return true;
 			}
 		}
 		
 		//d�placement en haut
-		else if (this.posY > 0 && this.posX == 0){
+		else if (this.posY > (0 + tourSpirale) && this.posX == tourSpirale){
 			this.posY--;
-			if (tiles[this.posY][this.posX].getOwner() == Const.C_NONE) {
+			if (tiles[this.posY][this.posX+tourSpirale].getOwner() == Const.C_NONE) {
+				return true;
+			}
+			
+			else {
+				tourSpirale++;
+				this.posX = tourSpirale;
+				this.posY = tourSpirale;
 				return true;
 			}
 		}
