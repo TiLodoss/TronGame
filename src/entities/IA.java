@@ -180,8 +180,30 @@ public class IA extends GameEntity
 	
 	public boolean suivreJoueur(int direction) {
 		switch(direction) {
+			// si le joueur se deplace à gauche...
 			case Const.DIR_LEFT:
-				if (this.posX > 0){
+				if (this.posX<Const.NB_MAXTILES-1) { // ... l'IA se deplace a droite
+					if (DeplacementsPossiblesIA3.droitePossible) {
+						if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
+							this.posX++;
+							DeplacementsPossiblesIA3.gauchePossible = false;
+							DeplacementsPossiblesIA3.hautPossible = true;
+							DeplacementsPossiblesIA3.basPossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}	
+				
+				else return false;				
+				
+			// si le joueur se deplace a droite...
+			case Const.DIR_RIGHT:				
+				if (this.posX > 0){ // ... l'IA se deplace a gauche
 					if (DeplacementsPossiblesIA3.gauchePossible) {
 						if (tiles[this.posY][this.posX-1].getOwner() == Const.C_NONE) {
 							this.posX--;
@@ -199,51 +221,10 @@ public class IA extends GameEntity
 				}			
 				
 				else return false;
-				
-			case Const.DIR_RIGHT:				
-				if (this.posX<Const.NB_MAXTILES-1) {
-					if (DeplacementsPossiblesIA3.droitePossible) {
-						if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
-							this.posX++;
-							DeplacementsPossiblesIA3.gauchePossible = false;
-							DeplacementsPossiblesIA3.hautPossible = true;
-							DeplacementsPossiblesIA3.basPossible = true;
-							return true;
-						}
-					}
-					
-					else {
-						direction = randDirection.nextInt(4);
-						move(this, direction);
-					}
-				}	
-				
-				else return false;
 			
-			// deplacement haut
+			// si le joueur se deplace en haut...
 			case Const.DIR_TOP:				
-				if (this.posY > 0){
-					if (DeplacementsPossiblesIA3.hautPossible) {
-						if (tiles[this.posY-1][this.posX].getOwner() == Const.C_NONE) {
-							this.posY--;
-							DeplacementsPossiblesIA3.basPossible = false;
-							DeplacementsPossiblesIA3.gauchePossible = true;
-							DeplacementsPossiblesIA3.droitePossible = true;
-							return true;
-						}
-					}
-					
-					else {
-						direction = randDirection.nextInt(4);
-						move(this, direction);
-					}
-				}
-				
-				else return false;
-			
-			// deplacement bas
-			case Const.DIR_BOTTOM:				
-				if (this.posY<Const.NB_MAXTILES-1) {
+				if (this.posY<Const.NB_MAXTILES-1) { // ... l'IA se deplace en bas
 					if (DeplacementsPossiblesIA3.basPossible) {
 						if (tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY++;
@@ -261,6 +242,28 @@ public class IA extends GameEntity
 				}
 				
 				else return false;
+			
+			// si le joueur se deplace en bas...
+			case Const.DIR_BOTTOM:
+				if (this.posY > 0){ // ... l'IA se deplace en haut
+					if (DeplacementsPossiblesIA3.hautPossible) {
+						if (tiles[this.posY-1][this.posX].getOwner() == Const.C_NONE) {
+							this.posY--;
+							DeplacementsPossiblesIA3.basPossible = false;
+							DeplacementsPossiblesIA3.gauchePossible = true;
+							DeplacementsPossiblesIA3.droitePossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}
+				
+				else return false;
+				
 		}
 		
 		return false;
