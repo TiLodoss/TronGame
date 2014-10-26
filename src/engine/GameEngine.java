@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import listeners.IAListener;
 import listeners.PlayerListener;
+import listeners.ThreadListener;
 import other.Const;
 import other.InteractionClavier;
 import threads.EntityThread;
@@ -36,7 +37,7 @@ public class GameEngine {
 	private GamePanel gPanel; // r�f�rence sur la grille de jeu
 	private ArrayList<Tile> coloredTiles; //liste des tuiles colorees par le joueur/les ia
 	private int keyPressedCode = 0;
-	private GameThread gameThread;
+	private GameThread gameThread; //thread gerant la boucle de jeu
 
 	/**
 	 * Constructeur de GameEngine
@@ -67,54 +68,54 @@ public class GameEngine {
 		boolean success = false;
 		window.getGamePanel().cleanGrid();
 
-		if(currentRound < nbRounds)
+		currentRound++;
+		System.out.println("Round "+currentRound+" commence");
+
+		if(currentRound > 1)
 		{
-			currentRound++;
-			System.out.println("Round "+currentRound+" commence");
 
-			if(currentRound > 1)
-			{
-				
-				//Repositionnement des entites
-				entities.get(0).setPosX(10);
-				entities.get(0).setPosY(10);
-				entities.get(1).setPosX(0);
-				entities.get(1).setPosY(0);
-				entities.get(2).setPosX(50);
-				entities.get(2).setPosY(50);
-				entities.get(2).setPosX(15);
-				entities.get(2).setPosY(75);
-			}
-
-			//TODO initialisation du round	
-
-
-
-			player.setCurrentDirection(Const.DIR_RIGHT); //direction de depart du joueur
-			//entities.get(1).setCurrentDirection(Const.DIR_RIGHT);//direction de depart de l'ia 1
-			
-			//Affichage des joueurs/IA a leur position initiale
-			try 
-			{
-				window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
-				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-				window.getGamePanel().paintTile(entities.get(2).getPosX(), entities.get(2).getPosY(), entities.get(2).getOwnerCode());
-				window.getGamePanel().paintTile(entities.get(3).getPosX(), entities.get(3).getPosY(), entities.get(3).getOwnerCode());
-			} 
-
-			catch (GameException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			play();
+			//Repositionnement des entites
+			entities.get(0).setPosX(10);
+			entities.get(0).setPosY(10);
+			entities.get(1).setPosX(0);
+			entities.get(1).setPosY(0);
+			entities.get(2).setPosX(50);
+			entities.get(2).setPosY(50);
+			entities.get(3).setPosX(15);
+			entities.get(3).setPosY(75);
 		}
 
-		if(currentRound == nbRounds)
+		//TODO reinitialisation du statut des joueurs/ia si differents (d'un round a l'autre)
+		for(GameEntity e : entities)
 		{
-			gameOver();
+			if(e.getStatus() != Const.ENT_ALIVE)
+			{
+				e.setStatus(Const.ENT_ALIVE);
+			}
 		}
+
+
+
+		player.setCurrentDirection(Const.DIR_RIGHT); //direction de depart du joueur
+		//entities.get(1).setCurrentDirection(Const.DIR_RIGHT);//direction de depart de l'ia 1
+
+		//Affichage des joueurs/IA a leur position initiale
+		try 
+		{
+			window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
+			window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
+			window.getGamePanel().paintTile(entities.get(2).getPosX(), entities.get(2).getPosY(), entities.get(2).getOwnerCode());
+			window.getGamePanel().paintTile(entities.get(3).getPosX(), entities.get(3).getPosY(), entities.get(3).getOwnerCode());
+		} 
+
+		catch (GameException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		play();
+
 		return success;
 	}
 
@@ -126,7 +127,7 @@ public class GameEngine {
 	{
 		window.displayGameOverDialog(entities);
 	}
-	
+
 	/**
 	 * Methode qui retourne le nombre de joueurs/IA encore en vie
 	 * @return
@@ -139,10 +140,10 @@ public class GameEngine {
 			if(e.getStatus() == Const.ENT_ALIVE)
 				nbAlive++;
 		}
-		
+
 		return nbAlive;
 	}
-	
+
 	/**
 	 * Methode de calcul du score de chaque entite (+ mise a jour affichage du score)
 	 */
@@ -166,73 +167,35 @@ public class GameEngine {
 	{
 
 		Tile[][] tiles = window.getGamePanel().getTiles();
-		if(gameThread == null)
-		{
-			gameThread = new GameThread();
-		}
-		gameThread.start();
+		gameThread = new GameThread();
+		gameThread.setThreadListener(new ThreadListener(){
 
+			/**
+			 * Methode appellee lorsque le GameThread signale son arret
+			 * (fin d'un round)
+			 */
+			@Override
+			public void onThreadStopped() {
+				gameThread = null; //dereferencer le thread pour le garbage collecter ulterieurement
+				System.out.println("thread tué");
 
-		/*InteractionClavier interaction = new InteractionClavier((Player)entities.get(0));
+				//Mise a jour du score
+				calculateScore();
 
-		window.addKeyListener(interaction);
-		interaction.keyPressed(new KeyEvent(window, 
-							KeyEvent.KEY_PRESSED,
-							(long) 1, 0, KeyEvent.VK_RIGHT,
-							KeyEvent.CHAR_UNDEFINED)); */
-
-
-		//gameOver(); //test fenetre de score
-
-		//TEST
-		//for(int i=1;i<10;i++)
-		//{
-		//entities.get(0).getTiles().add(window.getGamePanel().getTiles()[0][i]); //on ajoute des tuiles a colorer pour le joueur
-
-		//A voir si on fait directement paintTile a partir d'ici (plus simple)
-		//ou si on doit stocker les infos sur chaque tuile dans une liste et l'envoyer au panel
-		/*try 
-			{
-				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-			} 
-
-			catch (GameException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} */
-		//}
-
-		/*while (entities.get(1).move(entities.get(1))) {
-			try {
-
-				window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-			}
-
-			catch(GameException e) {
-				e.printStackTrace();
-			}
-		}*/
-
-		//TEST bouger joueur 1
-		/*for(int i=0; i<50; i++) {
-				if(entities.get(0).move(entities.get(0),40)) {
-
-					try {
-						window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
-					}
-					catch(GameException e) {
-						e.printStackTrace();
+				//A la fin du round on regarde si quelqu'un a un score egal a 3, si c'est le cas
+				//alors on arrete le jeu
+				for(GameEntity e : entities)
+				{
+					if(e.getScore() == 3)
+					{
+						gameOver();
 					}
 				}
-			}*/
+			}
 
-		//for(Tile t : entities.get(0).getTiles())
-		//{
-		//t.setOwner(Const.C_PLAYER); //FIXME pas bon, ça change aussi l'owner sur la tuile de tiles[][]
-		//}
+		});
 
-		//refresh();
+		gameThread.start();
 	}
 
 	/**
@@ -329,6 +292,7 @@ public class GameEngine {
 
 
 
+
 	/**
 	 * Classe interne GameThread
 	 * @author Yannis M'RAD, Vincent AUNAI
@@ -337,23 +301,23 @@ public class GameEngine {
 	 *
 	 */
 	private class GameThread extends Thread{
-		private GameEngine gameEngine;
 		private PlayerThread playerThread; //thread associe au joueur
 		private IAThread tIA1, tIA2, tIA3; //thread associes aux IA
 		private PlayerListener playerListener;
 		private InteractionClavier interaction;
+		private ThreadListener threadListener;
+		private boolean runLoop;
 
 		/**
 		 * Constructeur de GameThread
 		 */
 		public GameThread()
 		{
-			gameEngine = GameEngine.this;
 			playerThread = new PlayerThread(GameEngine.this.getPlayer());
 			this.tIA1 = new IAThread((IA) GameEngine.this.getEntities().get(1));
 			this.tIA2 = new IAThread((IA) GameEngine.this.getEntities().get(2));
 			this.tIA3 = new IAThread((IA) GameEngine.this.getEntities().get(3));
-
+			this.runLoop = true;
 
 			/* Creation d'une interaction clavier pour le joueur */
 			if(this.interaction == null)
@@ -374,17 +338,15 @@ public class GameEngine {
 		 */
 		public void run()
 		{
-			boolean runLoop = true;
-			
 			//TEST
 			//tIA2.getEntity().setStatus(Const.ENT_DEAD);
 			//tIA3.getEntity().setStatus(Const.ENT_DEAD);
-			
+
 			while(runLoop)
 			{
 				playerThread.run();
-				//tIA1.run();
-				//tIA2.run();
+				tIA1.run();
+				tIA2.run();
 				tIA3.run();
 
 
@@ -400,7 +362,7 @@ public class GameEngine {
 				}
 			}
 		}
-		
+
 		/**
 		 * Definition des methodes du player listener pour repercuter les modifications
 		 * sur le GamePanel 
@@ -411,17 +373,17 @@ public class GameEngine {
 
 				@Override
 				public void onDirectionChanged(int newDirection) {
-					
-					
+
+
 				}
 
 				@Override
 				public void onPlayerDeath() {
 					playerThread.getEntity().setStatus(Const.ENT_DEAD);
 					System.out.println("Joueur mort !");
-					
+
 				}
-				
+
 				//Si le joueur s'est deplace, colorer la tuile ou il vient de passer
 				@Override
 				public void hasMoved() {
@@ -442,15 +404,15 @@ public class GameEngine {
 					if(playerThread.getEntity().getStatus() == Const.ENT_DEAD)
 					{
 						playerThread.stop();
-						
+
 						//Après mort du joueur, verifier s'il reste 1 survivant (fin du round)
 						checkEndGame();
 					}	
 				}
-				
+
 			});
 		}
-		
+
 		/**
 		 * Methode qui stoppe les threads des entites
 		 */
@@ -461,7 +423,7 @@ public class GameEngine {
 			if(tIA2.isAlive()) tIA2.stop();
 			if(tIA3.isAlive()) tIA3.stop();
 		}
-		
+
 		/**
 		 * Methode qui verifie s'il reste 1 survivant, auquel cas un round se termine
 		 */
@@ -469,21 +431,23 @@ public class GameEngine {
 		{
 			if(entitiesAlive() == 1)
 			{
-				calculateScore();
+				runLoop = false;
 				stopAllThreads();
-				GameThread.this.stop();
 				window.enablePlayButton();
+				threadListener.onThreadStopped();
+				this.stop();
+
 			}
 		}
-		
+
 		public void setIAListener(final IAThread iaThread)
 		{
 			iaThread.setIAListener(new IAListener(){
 
 				@Override
 				public void onDirectionChanged(int newDirection) {
-					
-					
+
+
 				}
 
 				@Override
@@ -491,12 +455,12 @@ public class GameEngine {
 					iaThread.getEntity().setStatus(Const.ENT_DEAD);
 					System.out.println("IA morte !");
 					iaThread.stop();
-					
+
 					//Apres mort de l'ia, verifier s'il reste 1 survivant
 					checkEndGame();
-					
+
 				}
-				
+
 				//Si l'IA s'est deplace, colorer la tuile ou il vient de passer
 				@Override
 				public void hasMoved() {
@@ -512,10 +476,18 @@ public class GameEngine {
 						//donc on peut tuer l'IA ici, a voir si on peut ameliorer ca ?
 					}		
 				}
-				
+
 			});
 		}
-	
+
+		public ThreadListener getThreadListener() {
+			return threadListener;
+		}
+
+		public void setThreadListener(ThreadListener threadListener) {
+			this.threadListener = threadListener;
+		}
+
 	}
 
 
