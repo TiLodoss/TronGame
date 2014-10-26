@@ -30,14 +30,11 @@ public class InteractionClavier implements KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		keyPressedCode = arg0.getKeyCode();
-		System.out.println(keyPressedCode);
-		//player.move(player, keyPressedCode);
 		keyIsPressed = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		//keyIsPressed = false;
 
 	}
 

@@ -53,9 +53,9 @@ public class GameEngine {
 		this.currentRound = 0;
 		this.entities.add(player);
 
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(this.gPanel, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur en diagonale)
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur)
 	}
 
 	/**
@@ -378,22 +378,22 @@ public class GameEngine {
 			
 			//TEST
 			//tIA2.getEntity().setStatus(Const.ENT_DEAD);
-			tIA3.getEntity().setStatus(Const.ENT_DEAD);
+			//tIA3.getEntity().setStatus(Const.ENT_DEAD);
 			
 			while(runLoop)
 			{
 				playerThread.run();
-				tIA1.run();
-				tIA2.run();
-				//tIA3.run();
+				//tIA1.run();
+				//tIA2.run();
+				tIA3.run();
 
 
 				try {
 					//window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
 					playerThread.sleep(10);
-					tIA1.sleep(10);
-					tIA2.sleep(10);
-					//tIA3.sleep(50);
+					//tIA1.sleep(10);
+					//tIA2.sleep(10);
+					tIA3.sleep(50);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -4,6 +4,7 @@ package entities;
 
 import java.util.Random;
 
+import engine.GameEngine;
 import other.Const;
 import graphics.GamePanel;
 import graphics.Tile;
@@ -19,23 +20,35 @@ public class IA extends GameEntity
 {
 	//private int diffLvl; //niveau de difficult�
 	private GamePanel gPanel;
+	private GameEngine gEngine;
 	private Tile[][] tiles;
-	int compteur = 0; //compteur pour garder une direction
-	Random randDirection = new Random();
-	int direction = randDirection.nextInt(4);//direction choisie au hasard
-	boolean gauchePossible, droitePossible, hautPossible, basPossible;
+	private int compteur = 0; //compteur pour garder une direction
+	private Random randDirection = new Random();
+	private int direction = randDirection.nextInt(4);//direction choisie au hasard
 	
-	public IA(GamePanel panel, int lvl, int ownerCodeIA, int x, int y)
+	
+	private static class DeplacementsPossiblesIA2 {
+		private static boolean gauchePossible = true;
+		private static boolean droitePossible = true;
+		private static boolean hautPossible = true;
+		private static boolean basPossible = true;
+	}
+	
+	private static class DeplacementsPossiblesIA3 {
+		private static boolean gauchePossible = true;
+		private static boolean droitePossible = true;
+		private static boolean hautPossible = true;
+		private static boolean basPossible = true;
+	}
+	
+	public IA(GamePanel panel, GameEngine engine, int lvl, int ownerCodeIA, int x, int y)
 	{
 		gPanel = panel;
+		gEngine = engine;
 		tiles = gPanel.getTiles();
 		ownerCode = ownerCodeIA;
 		posX = x;
 		posY = y;
-		gauchePossible = true;
-		droitePossible = true;
-		hautPossible = true;
-		basPossible = true;
 	}
 	
 	public boolean deplacerSpirale() {	
@@ -81,12 +94,12 @@ public class IA extends GameEntity
 			// deplacement gauche
 			case Const.DIR_LEFT:
 				if (this.posX > 0){
-					if (gauchePossible) {
+					if (DeplacementsPossiblesIA2.gauchePossible) {
 						if (tiles[this.posY][this.posX-1].getOwner() == Const.C_NONE) {
 							this.posX--;
-							droitePossible = false;
-							basPossible = true;
-							hautPossible = true;
+							DeplacementsPossiblesIA2.droitePossible = false;
+							DeplacementsPossiblesIA2.basPossible = true;
+							DeplacementsPossiblesIA2.hautPossible = true;
 							return true;
 						}
 					}
@@ -102,12 +115,12 @@ public class IA extends GameEntity
 			// deplacement droite
 			case Const.DIR_RIGHT:				
 				if (this.posX<Const.NB_MAXTILES-1) {
-					if (droitePossible) {
+					if (DeplacementsPossiblesIA2.droitePossible) {
 						if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
 							this.posX++;
-							gauchePossible = false;
-							hautPossible = true;
-							basPossible = true;
+							DeplacementsPossiblesIA2.gauchePossible = false;
+							DeplacementsPossiblesIA2.hautPossible = true;
+							DeplacementsPossiblesIA2.basPossible = true;
 							return true;
 						}
 					}
@@ -123,12 +136,12 @@ public class IA extends GameEntity
 			// deplacement haut
 			case Const.DIR_TOP:				
 				if (this.posY > 0){
-					if (hautPossible) {
+					if (DeplacementsPossiblesIA2.hautPossible) {
 						if (tiles[this.posY-1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY--;
-							basPossible = false;
-							gauchePossible = true;
-							droitePossible = true;
+							DeplacementsPossiblesIA2.basPossible = false;
+							DeplacementsPossiblesIA2.gauchePossible = true;
+							DeplacementsPossiblesIA2.droitePossible = true;
 							return true;
 						}
 					}
@@ -144,12 +157,12 @@ public class IA extends GameEntity
 			// deplacement bas
 			case Const.DIR_BOTTOM:				
 				if (this.posY<Const.NB_MAXTILES-1) {
-					if (basPossible) {
+					if (DeplacementsPossiblesIA2.basPossible) {
 						if (tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
 							this.posY++;
-							hautPossible = false;
-							gauchePossible = true;
-							droitePossible = true;
+							DeplacementsPossiblesIA2.hautPossible = false;
+							DeplacementsPossiblesIA2.gauchePossible = true;
+							DeplacementsPossiblesIA2.droitePossible = true;
 							return true;
 						}
 					}
@@ -165,7 +178,91 @@ public class IA extends GameEntity
 		return false;
 	}
 	
-	public boolean suivreJoueur() {
+	public boolean suivreJoueur(int direction) {
+		switch(direction) {
+			case Const.DIR_LEFT:
+				if (this.posX > 0){
+					if (DeplacementsPossiblesIA3.gauchePossible) {
+						if (tiles[this.posY][this.posX-1].getOwner() == Const.C_NONE) {
+							this.posX--;
+							DeplacementsPossiblesIA3.droitePossible = false;
+							DeplacementsPossiblesIA3.basPossible = true;
+							DeplacementsPossiblesIA3.hautPossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}			
+				
+				else return false;
+				
+			case Const.DIR_RIGHT:				
+				if (this.posX<Const.NB_MAXTILES-1) {
+					if (DeplacementsPossiblesIA3.droitePossible) {
+						if (tiles[this.posY][this.posX+1].getOwner() == Const.C_NONE) {
+							this.posX++;
+							DeplacementsPossiblesIA3.gauchePossible = false;
+							DeplacementsPossiblesIA3.hautPossible = true;
+							DeplacementsPossiblesIA3.basPossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}	
+				
+				else return false;
+			
+			// deplacement haut
+			case Const.DIR_TOP:				
+				if (this.posY > 0){
+					if (DeplacementsPossiblesIA3.hautPossible) {
+						if (tiles[this.posY-1][this.posX].getOwner() == Const.C_NONE) {
+							this.posY--;
+							DeplacementsPossiblesIA3.basPossible = false;
+							DeplacementsPossiblesIA3.gauchePossible = true;
+							DeplacementsPossiblesIA3.droitePossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}
+				
+				else return false;
+			
+			// deplacement bas
+			case Const.DIR_BOTTOM:				
+				if (this.posY<Const.NB_MAXTILES-1) {
+					if (DeplacementsPossiblesIA3.basPossible) {
+						if (tiles[this.posY+1][this.posX].getOwner() == Const.C_NONE) {
+							this.posY++;
+							DeplacementsPossiblesIA3.hautPossible = false;
+							DeplacementsPossiblesIA3.gauchePossible = true;
+							DeplacementsPossiblesIA3.droitePossible = true;
+							return true;
+						}
+					}
+					
+					else {
+						direction = randDirection.nextInt(4);
+						move(this, direction);
+					}
+				}
+				
+				else return false;
+		}
+		
 		return false;
 	}
 
@@ -191,7 +288,7 @@ public class IA extends GameEntity
 		switch(entity.getOwnerCode()) {
 			case Const.C_IA1: return deplacerSpirale();
 			case Const.C_IA2: return deplacerAleatoire(direction);
-			case Const.C_IA3: return suivreJoueur();
+			case Const.C_IA3: return suivreJoueur(direction);
 		}
 		
 		return false;
@@ -199,15 +296,25 @@ public class IA extends GameEntity
 	
 	public boolean move(GameEntity entity) {
 		// TODO Auto-generated method stub
-		if (compteur != 5) {
-			compteur++;
-			return move(entity, direction);
-		}
-		
-		else {
-			compteur = 0;
-			direction = randDirection.nextInt(4);
-			return move(entity, direction);
+		switch(entity.getOwnerCode()) {
+			case Const.C_IA1: return move(entity, 0);
+			
+			case Const.C_IA2: 
+				if (compteur != 5) {				
+					compteur++;
+					return move(entity, direction);
+				}
+				
+				else {
+					compteur = 0;
+					direction = randDirection.nextInt(4);
+					return move(entity, direction);
+				}
+			
+			case Const.C_IA3:
+				return move(entity, gEngine.getPlayer().getCurrentDirection());
+			
+			default: return false;
 		}
 	}
 
