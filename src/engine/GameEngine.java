@@ -81,8 +81,8 @@ public class GameEngine {
 			entities.get(1).setPosY(0);
 			entities.get(2).setPosX(50);
 			entities.get(2).setPosY(50);
-			entities.get(3).setPosX(15);
-			entities.get(3).setPosY(75);
+			entities.get(3).setPosX(75);
+			entities.get(3).setPosY(90);
 		}
 
 		//TODO reinitialisation du statut des joueurs/ia si differents (d'un round a l'autre)
