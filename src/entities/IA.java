@@ -84,7 +84,7 @@ public class IA extends GameEntity
 				return true;
 			}
 			
-			else {
+			else if (tiles[this.posY][this.posX+tourSpirale].getOwner() == Const.C_IA1){
 				tourSpirale++;
 				this.posX = tourSpirale;
 				this.posY = tourSpirale;

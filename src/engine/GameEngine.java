@@ -56,7 +56,7 @@ public class GameEngine {
 
 		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
 		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL2, Const.C_IA3, 15, 75)); // ia intelligente (suit le joueur)
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL2, Const.C_IA3, 75, 90)); // ia intelligente (suit le joueur)
 	}
 
 	/**
@@ -344,18 +344,18 @@ public class GameEngine {
 
 			while(runLoop)
 			{
-				//playerThread.run();
+				playerThread.run();
 				tIA1.run();
-				//tIA2.run();
-				//tIA3.run();
+				tIA2.run();
+				tIA3.run();
 
 
 				try {
 					//window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-					//playerThread.sleep(10);
+					playerThread.sleep(10);
 					tIA1.sleep(10);
-					//tIA2.sleep(10);
-					//tIA3.sleep(50);
+					tIA2.sleep(10);
+					tIA3.sleep(50);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
