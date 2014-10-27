@@ -18,16 +18,16 @@ import graphics.Tile;
  */
 public class IA extends GameEntity
 {
-	//private int diffLvl; //niveau de difficultï¿½
-	private GamePanel gPanel;
-	private GameEngine gEngine;
-	private Tile[][] tiles;
+	private GamePanel gPanel; // référence du GamePanel
+	private GameEngine gEngine; //référence du GameEngines
+	private Tile[][] tiles; //référence du tableau de Tile
 	private int compteur = 0; //compteur pour garder une direction
 	private Random randDirection = new Random();
 	private int direction = randDirection.nextInt(4);//direction choisie au hasard
-	private int tourSpirale = 0;
+	private int tourSpirale = 0; // numero du tour de la spirale en cours - IA n°1
 
 
+	// Classes internes - Déplacements possibles pour l'IA 2 et 3
 	private static class DeplacementsPossiblesIA2 {
 		private static boolean gauchePossible = true;
 		private static boolean droitePossible = true;
@@ -42,6 +42,8 @@ public class IA extends GameEntity
 		private static boolean basPossible = true;
 	}
 
+	
+	
 	public IA(GamePanel panel, GameEngine engine, int lvl, int ownerCodeIA, int x, int y)
 	{
 		gPanel = panel;
@@ -113,14 +115,13 @@ public class IA extends GameEntity
 				}
 
 				else {
-					direction = randDirection.nextInt(4);
-					move(this, direction);
+					if (DeplacementsPossiblesIA2.basPossible) return move(this, Const.DIR_BOTTOM);
+					else if (DeplacementsPossiblesIA2.hautPossible) return move(this, Const.DIR_TOP);
+					else return false;
 				}
-			}			
+			}
 
-			else return false;
-
-			// deplacement droite
+		// deplacement droite
 		case Const.DIR_RIGHT:				
 			if (this.posX<Const.NB_MAXTILES-1) {
 				if (DeplacementsPossiblesIA2.droitePossible) {
@@ -134,14 +135,13 @@ public class IA extends GameEntity
 				}
 
 				else {
-					direction = randDirection.nextInt(4);
-					move(this, direction);
+					if (DeplacementsPossiblesIA2.basPossible) return move(this, Const.DIR_BOTTOM);
+					else if (DeplacementsPossiblesIA2.hautPossible) return move(this, Const.DIR_TOP);
+					else return false;
 				}
-			}	
+			}
 
-			else return false;
-
-			// deplacement haut
+		// deplacement haut
 		case Const.DIR_TOP:				
 			if (this.posY > 0){
 				if (DeplacementsPossiblesIA2.hautPossible) {
@@ -155,14 +155,13 @@ public class IA extends GameEntity
 				}
 
 				else {
-					direction = randDirection.nextInt(4);
-					move(this, direction);
+					if (DeplacementsPossiblesIA2.gauchePossible) return move(this, Const.DIR_LEFT);
+					else if (DeplacementsPossiblesIA2.droitePossible) return move(this, Const.DIR_RIGHT);
+					else return false;
 				}
 			}
 
-			else return false;
-
-			// deplacement bas
+		// deplacement bas
 		case Const.DIR_BOTTOM:				
 			if (this.posY<Const.NB_MAXTILES-1) {
 				if (DeplacementsPossiblesIA2.basPossible) {
@@ -176,12 +175,11 @@ public class IA extends GameEntity
 				}
 
 				else {
-					direction = randDirection.nextInt(4);
-					move(this, direction);
+					if (DeplacementsPossiblesIA2.gauchePossible) return move(this, Const.DIR_LEFT);
+					else if (DeplacementsPossiblesIA2.droitePossible) return move(this, Const.DIR_RIGHT);
+					else return false;
 				}
 			}
-
-			else return false;
 		}
 		return false;
 	}
@@ -204,7 +202,7 @@ public class IA extends GameEntity
 
 				else {
 					direction = randDirection.nextInt(4);
-					move(this, direction);
+					return move(this, direction);
 				}
 			}	
 
@@ -225,7 +223,7 @@ public class IA extends GameEntity
 
 				else {
 					direction = randDirection.nextInt(4);
-					move(this, direction);
+					return move(this, direction);
 				}
 			}			
 
@@ -246,7 +244,7 @@ public class IA extends GameEntity
 
 				else {
 					direction = randDirection.nextInt(4);
-					move(this, direction);
+					return move(this, direction);
 				}
 			}
 
@@ -267,7 +265,7 @@ public class IA extends GameEntity
 
 				else {
 					direction = randDirection.nextInt(4);
-					move(this, direction);
+					return move(this, direction);
 				}
 			}
 
@@ -335,24 +333,24 @@ public class IA extends GameEntity
 	public boolean move(GameEntity entity) {
 		// TODO Auto-generated method stub
 		switch(entity.getOwnerCode()) {
-		case Const.C_IA1: return move(entity, 0);
-
-		case Const.C_IA2: 
-			if (compteur != 5) {				
-				compteur++;
-				return move(entity, direction);
-			}
-
-			else {
-				compteur = 0;
-				direction = randDirection.nextInt(4);
-				return move(entity, direction);
-			}
-
-		case Const.C_IA3:
-			return move(entity, gEngine.getPlayer().getCurrentDirection(), gEngine.getPlayer().getStatus());
-
-		default: return false;
+			case Const.C_IA1: return move(entity, 0);
+	
+			case Const.C_IA2: 
+				if (compteur < 5) {				
+					compteur++;
+					return move(entity, direction);
+				}
+	
+				else {
+					compteur = 0;
+					direction = randDirection.nextInt(4);
+					return move(entity, direction);
+				}
+	
+			case Const.C_IA3:
+				return move(entity, gEngine.getPlayer().getCurrentDirection(), gEngine.getPlayer().getStatus());
+	
+			default: return false;
 		}
 	}
 

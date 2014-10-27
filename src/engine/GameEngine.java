@@ -344,18 +344,17 @@ public class GameEngine {
 
 			while(runLoop)
 			{
-				playerThread.run();
-				tIA1.run();
+				//playerThread.run();
+				//tIA1.run();
 				tIA2.run();
-				tIA3.run();
+				//tIA3.run();
 
 
 				try {
-					//window.getGamePanel().paintTile(entities.get(1).getPosX(), entities.get(1).getPosY(), entities.get(1).getOwnerCode());
-					playerThread.sleep(10);
-					tIA1.sleep(10);
-					tIA2.sleep(10);
-					tIA3.sleep(50);
+					//playerThread.sleep(20);
+					//tIA1.sleep(20);
+					tIA2.sleep(20);
+					//tIA3.sleep(20);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
