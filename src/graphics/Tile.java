@@ -22,25 +22,14 @@ public class Tile {
 	
 	/**
 	 * Constructeur de Tile
-	 * @param rectangle
-	 * @param color
-	 */
-	public Tile(int x, int y, JPanel panel, Color color)
-	{
-		this.panel = panel;
-		this.color = color;
-		this.panel.setBackground(color);
-		this.owner = Const.C_NONE; //pas de propriétaire par défaut
-	}
-	
-	/**
-	 * Constructeur de Tile
 	 * @param x
 	 * @param y
 	 * @param panel
 	 */
 	public Tile(int x, int y, JPanel panel)
 	{
+		this.x = x;
+		this.y = y;
 		this.panel = panel;
 		this.owner = Const.C_NONE;
 	}

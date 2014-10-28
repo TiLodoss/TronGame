@@ -25,7 +25,7 @@ import exceptions.GameException;
 public class GamePanel extends JPanel{
 
 	private Tile[][] tiles; //"carres" de la grille de jeu
-	private GridLayout gridLayout;
+	private GridLayout gridLayout; // layout
 
 	/**
 	 * Constructeur de GamePanel
@@ -54,8 +54,6 @@ public class GamePanel extends JPanel{
 	 */
 	public void initGrid(int size)
 	{
-		int width = getWidth()/size, height = getHeight()/size;
-
 		for(int i=0;i<size;i++)
 		{
 			for(int j=0;j<size;j++)
@@ -106,14 +104,13 @@ public class GamePanel extends JPanel{
 			switch(ownerColor)
 			{
 				case Const.C_PLAYER:
-						tiles[y][x].setOwner(Const.C_PLAYER);
-						tiles[y][x].paintPanel(Color.RED);
-
+					tiles[y][x].setOwner(Const.C_PLAYER);
+					tiles[y][x].paintPanel(Color.RED);
 					break;
 					
 				case Const.C_IA1:
-						tiles[y][x].setOwner(Const.C_IA1);
-						tiles[y][x].paintPanel(Color.BLUE);
+					tiles[y][x].setOwner(Const.C_IA1);
+					tiles[y][x].paintPanel(Color.BLUE);
 					break;
 					
 				case Const.C_IA2:
@@ -138,27 +135,6 @@ public class GamePanel extends JPanel{
 
 		repaint(); //Actualiser l'affichage
 	}
-	
-	/**
-	 * Methode permettant de mettre a jour les tuiles nouvellement colorees
-	 * @param tilesToUpdate
-	 */
-	public void updateData(ArrayList<Tile> tilesToUpdate)
-	{
-		for(int i=0;i<tilesToUpdate.size();i++)
-		{
-			System.out.println("tuile "+i);
-			try 
-			{
-				//TODO a ameliorer ?
-				paintTile(tilesToUpdate.get(i).getX(),tilesToUpdate.get(i).getY(), tilesToUpdate.get(i).getOwner());
-			} 
-			catch (GameException e) 
-			{
-				e.printStackTrace();
-			}
-		}
-	}
 
 	/**
 	 * Méthode painComponent (affichage a l'ecran)
@@ -167,30 +143,6 @@ public class GamePanel extends JPanel{
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-
-		//drawGrid(g);
-	}
-
-	/**
-	 * Methode de rafraichissement de la grille
-	 * @param g
-	 */
-	public void drawGrid(Graphics g)
-	{
-		Graphics2D g2D = (Graphics2D)g;
-
-		for(int i=0;i<tiles.length;i++)
-		{
-			for(int j=0;j<tiles[i].length;j++)
-			{
-				//Rectangle r = tiles[i][j].getRectangle();
-				//Color col = tiles[i][j].getColor();
-
-				//g2D.setColor(col);
-				//g2D.fillRect(r.x, r.y, r.width, r.height);
-				//this.add(r);
-			}
-		}
 	}
 
 	public GridLayout getGridLayout() {
@@ -209,10 +161,4 @@ public class GamePanel extends JPanel{
 	public void setTiles(Tile[][] tiles) {
 		this.tiles = tiles;
 	}
-	
-	
-	
-	
-
-
 }

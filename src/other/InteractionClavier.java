@@ -26,6 +26,9 @@ public class InteractionClavier implements KeyListener {
 		keyIsPressed = false;
 	}
 	
+	/**
+	 * Methode appelee lors de l'appui sur une touche
+	 */
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub

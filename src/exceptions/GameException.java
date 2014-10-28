@@ -10,6 +10,10 @@ package exceptions;
 public class GameException extends Exception{
 	private String message;
 	
+	/**
+	 * Constructeur de GameException
+	 * @param message
+	 */
 	public GameException(String message)
 	{
 		super();

@@ -57,11 +57,10 @@ public class PlayerThread extends EntityThread{
 					case 40:
 						entity.move(entity, Const.DIR_BOTTOM); 
 						break;
-						
 				}
 			}
 			
-			//Pas de touche appuyee, deplacer le joueur dans sa direction actuelle
+			//Pas de touche appuyee  : deplacer le joueur dans sa direction actuelle
 			else
 			{
 				entity.move(entity, entity.getCurrentDirection()); 

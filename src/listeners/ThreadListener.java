@@ -9,6 +9,6 @@ package listeners;
  */
 public interface ThreadListener {
 	
-	public void onThreadStopped();
+	public void onThreadStopped(); //Methode declenchee lorsque GameThread se termine
 
 }

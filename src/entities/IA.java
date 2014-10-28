@@ -18,16 +18,16 @@ import graphics.Tile;
  */
 public class IA extends GameEntity
 {
-	private GamePanel gPanel; // référence du GamePanel
-	private GameEngine gEngine; //référence du GameEngines
-	private Tile[][] tiles; //référence du tableau de Tile
+	private GamePanel gPanel; // rï¿½fï¿½rence du GamePanel
+	private GameEngine gEngine; //rï¿½fï¿½rence du GameEngines
+	private Tile[][] tiles; //rï¿½fï¿½rence du tableau de Tile
 	private int compteur = 0; //compteur pour garder une direction
 	private Random randDirection = new Random();
 	private int direction = randDirection.nextInt(4);//direction choisie au hasard
-	private int tourSpirale = 0; // numero du tour de la spirale en cours - IA n°1
+	private int tourSpirale = 0; // numero du tour de la spirale en cours - IA nï¿½1
 
 
-	// Classes internes - Déplacements possibles pour l'IA 2 et 3
+	// Classes internes - Dï¿½placements possibles pour l'IA 2 et 3
 	private static class DeplacementsPossiblesIA2 {
 		private static boolean gauchePossible = true;
 		private static boolean droitePossible = true;
@@ -43,7 +43,15 @@ public class IA extends GameEntity
 	}
 
 	
-	
+	/**
+	 * Constucteur d'IA
+	 * @param panel
+	 * @param engine
+	 * @param lvl
+	 * @param ownerCodeIA
+	 * @param x
+	 * @param y
+	 */
 	public IA(GamePanel panel, GameEngine engine, int lvl, int ownerCodeIA, int x, int y)
 	{
 		gPanel = panel;
@@ -54,8 +62,12 @@ public class IA extends GameEntity
 		posY = y;
 	}
 
+	/**
+	 * Methode de deplacement de l'ia facile
+	 * @return true
+	 */
 	public boolean deplacerSpirale() {
-		//dï¿½placement ï¿½ droite
+		//deplacement a droite
 		if (this.posX<Const.NB_MAXTILES-(tourSpirale+1) && this.posY == tourSpirale) {
 			if (tiles[this.posY+tourSpirale][this.posX+1].getOwner() == Const.C_NONE) {
 				this.posX++;
@@ -63,7 +75,7 @@ public class IA extends GameEntity
 			}
 		}
 
-		//dï¿½placement en bas
+		//deplacement en bas
 		else if (this.posX == (Const.NB_MAXTILES-(tourSpirale+1)) && this.posY<Const.NB_MAXTILES-(tourSpirale+1)) {
 			if (tiles[this.posY+1][this.posX-tourSpirale].getOwner() == Const.C_NONE) {
 				this.posY++;
@@ -71,7 +83,7 @@ public class IA extends GameEntity
 			}
 		}
 
-		//dï¿½placement ï¿½ gauche
+		//deplacement gauche
 		else if (this.posX > (0+tourSpirale) && this.posY == (Const.NB_MAXTILES-(tourSpirale+1))){
 			this.posX--;
 			if (tiles[this.posY-tourSpirale][this.posX].getOwner() == Const.C_NONE) {
@@ -79,7 +91,7 @@ public class IA extends GameEntity
 			}
 		}
 
-		//dï¿½placement en haut
+		//deplacement en haut
 		else if (this.posY > (0 + tourSpirale) && this.posX == tourSpirale){
 			this.posY--;
 			if (tiles[this.posY][this.posX+tourSpirale].getOwner() == Const.C_NONE) {
@@ -97,9 +109,11 @@ public class IA extends GameEntity
 		return false;
 	}
 
+	/**
+	 * Methode de deplacement de l'ia 2
+	 * @param direction
+	 */
 	public boolean deplacerAleatoire(int direction) {
-		Random randDirection = new Random();
-
 		switch(direction) {
 		// deplacement gauche
 		case Const.DIR_LEFT:
@@ -184,10 +198,14 @@ public class IA extends GameEntity
 		return false;
 	}
 
+	/**
+	 * Methode de deplacement de l'IA 3
+	 * @param direction
+	 */
 	public boolean inverseJoueur(int direction) {
 
 		switch(direction) {
-		// si le joueur se deplace ï¿½ gauche...
+		// si le joueur se deplace a gauche...
 		case Const.DIR_LEFT:
 			if (this.posX<Const.NB_MAXTILES-1) { // ... l'IA se deplace a droite
 				if (DeplacementsPossiblesIA3.droitePossible) {
@@ -277,20 +295,11 @@ public class IA extends GameEntity
 		return false;
 	}
 
-
-	@Override
-	public boolean collides() {
-		// TODO Auto-generated method stub
-		if (this.posX == 0 && this.posY == 0) return false;
-		else if ((tiles[this.posY][this.posX].getOwner() != Const.C_NONE))
-		{
-			this.setStatus(Const.ENT_DEAD);
-			return true;
-		}
-
-		return false;
-	}
-
+	/**
+	 * Methode pour deplacer les IA
+	 * @param entity
+	 * @param direction
+	 */
 	@Override
 	public boolean move(GameEntity entity, int direction) {
 		// TODO Auto-generated method stub
@@ -306,11 +315,10 @@ public class IA extends GameEntity
 	}
 
 	/**
-	 * Methode move (dediee a l'IA qui doit faire les mouvements inverses du joueur)
+	 * Methode move dediee a l'IA qui doit faire les mouvements inverses du joueur
 	 * @param entity
 	 * @param direction
 	 * @param playerStatus
-	 * @return
 	 */
 	public boolean move(GameEntity entity, int direction, int playerStatus)
 	{
@@ -330,8 +338,11 @@ public class IA extends GameEntity
 		return false;
 	}
 
+	/**
+	 * Methode move
+	 * @param entity
+	 */
 	public boolean move(GameEntity entity) {
-		// TODO Auto-generated method stub
 		switch(entity.getOwnerCode()) {
 			case Const.C_IA1: return move(entity, 0);
 	

@@ -17,6 +17,9 @@ public class Player extends GameEntity
 
 	/**
 	 * Constructeur de Player
+	 * @param gPanel
+	 * @param x
+	 * @param y
 	 */
 	public Player(GamePanel gPanel, int x, int y)
 	{
@@ -26,6 +29,11 @@ public class Player extends GameEntity
 		this.posY = y;
 	}
 
+	/**
+	 * Methode de déplacement du joueur
+	 * @param entity
+	 * @param direction
+	 */
 	@Override
 	public boolean move(GameEntity entity, int direction) {
 		// TODO Auto-generated method stub
@@ -141,18 +149,12 @@ public class Player extends GameEntity
 		return false;
 	}
 
+	/**
+	 * Methode move
+	 */
 	@Override
 	public boolean move(GameEntity entity) {
 		// TODO Auto-generated method stub
 		return move(entity, -1);
 	}
-
-	@Override
-	public boolean collides() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-
 }

@@ -21,32 +21,18 @@ public class IAThread extends EntityThread{
 	public IAThread(IA ia) {
 		this.entity = ia;
 	}
-	
+
 	/**
 	 * Methode run
 	 */
 	@Override
 	public void run()
 	{
-		//if(!entity.collides()) {
-			if(entity.getStatus() == Const.ENT_ALIVE)
-			{
-				entity.move(entity);
-				iaListener.hasMoved();
-			}
-			
-			/*else
-			{
-				System.out.println("fin du thread ia");
-				this.stop();
-			} */
-			
-		//}
-		
-		//else {
-			//System.out.println("IA morte");
-			
-		//}
+		if(entity.getStatus() == Const.ENT_ALIVE)
+		{
+			entity.move(entity);
+			iaListener.hasMoved();
+		}
 	}
 
 	public IAListener getIAListener() {
@@ -56,9 +42,9 @@ public class IAThread extends EntityThread{
 	public void setIAListener(IAListener iaListener) {
 		this.iaListener = iaListener;
 	}
-	
-	
-	
+
+
+
 
 
 }

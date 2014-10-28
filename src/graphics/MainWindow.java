@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
 	private GridLayout bottomLayout; //layout de la barre du bas
 	
 	private GameEngine engine; //moteur qui gere la logique du jeu
-	private JDialog loadingDialog, gameOverDialog;
+	private JDialog loadingDialog, gameOverDialog; //dialogue de chargement et de game over
 	
 	
 	/**
@@ -62,7 +62,6 @@ public class MainWindow extends JFrame {
 			this.gamePanel = new GamePanel(size);
 		} 
 		catch (GameException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -228,13 +227,13 @@ public class MainWindow extends JFrame {
 	}
 	
 	/**
-	 * Methode d'affichage du dialogue affichant le score final
+	 * Methode d'affichage du dialogue affichant le score final pour chaque entite
+	 * @param entities
 	 */
 	public void displayGameOverDialog(ArrayList<GameEntity> entities)
 	{
 		System.out.println("aaa");
 		JButton quit = new JButton("Quitter");
-		JButton restart = new JButton("Rejouer");
 		JPanel panel = new JPanel(), scorePanel = new JPanel(), buttonsPanel = new JPanel();
 		
 		this.gameOverDialog = new JDialog();
@@ -262,13 +261,12 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MainWindow.this.dispose();
+				MainWindow.this.dispose(); //fermer l'application
 				System.exit(0);
 			}
 			
 		});
 		
-		buttonsPanel.add(restart);
 		buttonsPanel.add(quit);
 		panel.add(scorePanel, BorderLayout.CENTER);
 		panel.add(buttonsPanel,BorderLayout.SOUTH);

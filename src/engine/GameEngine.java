@@ -1,8 +1,5 @@
 package engine;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import listeners.IAListener;
@@ -10,7 +7,6 @@ import listeners.PlayerListener;
 import listeners.ThreadListener;
 import other.Const;
 import other.InteractionClavier;
-import threads.EntityThread;
 import threads.IAThread;
 import threads.PlayerThread;
 import entities.GameEntity;
@@ -19,7 +15,6 @@ import entities.Player;
 import exceptions.GameException;
 import graphics.GamePanel;
 import graphics.MainWindow;
-import graphics.Tile;
 
 /**
  * Classe GameEngine
@@ -35,45 +30,41 @@ public class GameEngine {
 	private Player player; //le joueur
 	private int nbRounds, currentRound; //nombre de rounds a jouer et round actuel
 	private GamePanel gPanel; // r�f�rence sur la grille de jeu
-	private ArrayList<Tile> coloredTiles; //liste des tuiles colorees par le joueur/les ia
-	private int keyPressedCode = 0;
 	private GameThread gameThread; //thread gerant la boucle de jeu
 
 	/**
 	 * Constructeur de GameEngine
 	 * @param window
+	 * @param gPanel
 	 */
 	public GameEngine(MainWindow window, GamePanel gPanel)
 	{
 		this.window = window;
 		this.gPanel = gPanel;
 		this.entities = new ArrayList<GameEntity>();
-		this.coloredTiles = new ArrayList<Tile>();
 		this.player = new Player(gPanel, 10, 10);
 		this.nbRounds = Const.NB_MAXROUNDS;
 		this.currentRound = 0;
 		this.entities.add(player);
 
-		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia idiote (deplacement spirale)
-		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne (deplacement random)
-		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL2, Const.C_IA3, 75, 90)); // ia intelligente (suit le joueur)
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL0, Const.C_IA1, 0, 0)); //ia facile
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL1, Const.C_IA2, 50, 50)); //ia moyenne
+		this.entities.add(new IA(this.gPanel, GameEngine.this, Const.IA_LVL2, Const.C_IA3, 75, 90)); // ia difficile
 	}
 
 	/**
 	 * Methode permettant de lancer un round du jeu
 	 * @return success
 	 */
-	public boolean startRound()
+	public void startRound()
 	{
-		boolean success = false;
-		window.getGamePanel().cleanGrid();
+		window.getGamePanel().cleanGrid(); //nettoyage de la grille
 
 		currentRound++;
 		System.out.println("Round "+currentRound+" commence");
 
 		if(currentRound > 1)
 		{
-
 			//Repositionnement des entites
 			entities.get(0).setPosX(10);
 			entities.get(0).setPosY(10);
@@ -85,7 +76,7 @@ public class GameEngine {
 			entities.get(3).setPosY(90);
 		}
 
-		//TODO reinitialisation du statut des joueurs/ia si differents (d'un round a l'autre)
+		//reinitialisation du statut des joueurs/ia si differents (d'un round a l'autre)
 		for(GameEntity e : entities)
 		{
 			if(e.getStatus() != Const.ENT_ALIVE)
@@ -94,10 +85,7 @@ public class GameEngine {
 			}
 		}
 
-
-
 		player.setCurrentDirection(Const.DIR_RIGHT); //direction de depart du joueur
-		//entities.get(1).setCurrentDirection(Const.DIR_RIGHT);//direction de depart de l'ia 1
 
 		//Affichage des joueurs/IA a leur position initiale
 		try 
@@ -110,13 +98,10 @@ public class GameEngine {
 
 		catch (GameException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		play();
-
-		return success;
 	}
 
 	/**
@@ -166,12 +151,11 @@ public class GameEngine {
 	public void play()
 	{
 
-		Tile[][] tiles = window.getGamePanel().getTiles();
 		gameThread = new GameThread();
 		gameThread.setThreadListener(new ThreadListener(){
 
 			/**
-			 * Methode appellee lorsque le GameThread signale son arret
+			 * Methode appelee lorsque le GameThread signale son arret
 			 * (fin d'un round)
 			 */
 			@Override
@@ -196,25 +180,6 @@ public class GameEngine {
 		});
 
 		gameThread.start();
-	}
-
-	/**
-	 * Methode qui provoque un rafraichissement de l'image 
-	 * (recupere toutes les tuiles de chaque joueur et les envoie a la window pour colorer)
-	 */
-	public void refresh()
-	{
-		//TODO a continuer
-		ArrayList<Tile> updatedTiles = new ArrayList<Tile>();
-
-		//On ajou
-		for(int i=0;i<entities.size();i++)
-		{
-			System.out.println("nb tuile colorees : "+entities.get(i).getTiles().size());
-			updatedTiles.addAll(entities.get(i).getTiles());
-		}
-
-		this.window.getGamePanel().updateData(updatedTiles);
 	}
 
 	/**
@@ -282,17 +247,6 @@ public class GameEngine {
 		this.currentRound = currentRound;
 	}
 
-	public ArrayList<Tile> getColoredTiles() {
-		return coloredTiles;
-	}
-
-	public void setColoredTiles(ArrayList<Tile> coloredTiles) {
-		this.coloredTiles = coloredTiles;
-	}
-
-
-
-
 	/**
 	 * Classe interne GameThread
 	 * @author Yannis M'RAD, Vincent AUNAI
@@ -303,7 +257,6 @@ public class GameEngine {
 	private class GameThread extends Thread{
 		private PlayerThread playerThread; //thread associe au joueur
 		private IAThread tIA1, tIA2, tIA3; //thread associes aux IA
-		private PlayerListener playerListener;
 		private InteractionClavier interaction;
 		private ThreadListener threadListener;
 		private boolean runLoop;
@@ -338,23 +291,19 @@ public class GameEngine {
 		 */
 		public void run()
 		{
-			//TEST
-			//tIA2.getEntity().setStatus(Const.ENT_DEAD);
-			//tIA3.getEntity().setStatus(Const.ENT_DEAD);
-
 			while(runLoop)
 			{
-				//playerThread.run();
-				//tIA1.run();
+				playerThread.run();
+				tIA1.run();
 				tIA2.run();
-				//tIA3.run();
+				tIA3.run();
 
 
 				try {
-					//playerThread.sleep(20);
-					//tIA1.sleep(20);
+					playerThread.sleep(20);
+					tIA1.sleep(20);
 					tIA2.sleep(20);
-					//tIA3.sleep(20);
+					tIA3.sleep(20);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -371,12 +320,6 @@ public class GameEngine {
 			playerThread.setPlayerListener(new PlayerListener(){
 
 				@Override
-				public void onDirectionChanged(int newDirection) {
-
-
-				}
-
-				@Override
 				public void onPlayerDeath() {
 					playerThread.getEntity().setStatus(Const.ENT_DEAD);
 					System.out.println("Joueur mort !");
@@ -388,7 +331,8 @@ public class GameEngine {
 				public void hasMoved() {
 					try 
 					{
-						window.getGamePanel().paintTile(entities.get(0).getPosX(), entities.get(0).getPosY(), entities.get(0).getOwnerCode());
+						window.getGamePanel().paintTile(entities.get(0).getPosX(), 
+								entities.get(0).getPosY(), entities.get(0).getOwnerCode());
 					}
 					catch(GameException e) //Si paintTile retourne une exception : collision du joueur
 					{
@@ -442,13 +386,8 @@ public class GameEngine {
 		public void setIAListener(final IAThread iaThread)
 		{
 			iaThread.setIAListener(new IAListener(){
-
-				@Override
-				public void onDirectionChanged(int newDirection) {
-
-
-				}
-
+				
+				//Mort de l'IA
 				@Override
 				public void onIADeath() {
 					iaThread.getEntity().setStatus(Const.ENT_DEAD);
@@ -465,14 +404,15 @@ public class GameEngine {
 				public void hasMoved() {
 					try 
 					{
-						window.getGamePanel().paintTile(iaThread.getEntity().getPosX(), iaThread.getEntity().getPosY(), iaThread.getEntity().getOwnerCode());
+						window.getGamePanel().paintTile(iaThread.getEntity().getPosX(), 
+								iaThread.getEntity().getPosY(), iaThread.getEntity().getOwnerCode());
 					}
 					catch(GameException e) 
 					{
 						System.out.println(e.getMessage());
 						onIADeath();
-						//TODO Si l'exception est lancee c'est qu'on a essaye de peindre une case deja occupee
-						//donc on peut tuer l'IA ici, a voir si on peut ameliorer ca ?
+						//Si l'exception est lancee c'est que l'on a essaye de peindre 
+						//une case deja occupee
 					}		
 				}
 
@@ -488,9 +428,4 @@ public class GameEngine {
 		}
 
 	}
-
-
-
-
-
 }

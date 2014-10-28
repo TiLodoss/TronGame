@@ -8,9 +8,8 @@ package listeners;
  *
  */
 public interface PlayerListener {
-	public void hasMoved();
-	public void onDirectionChanged(int newDirection);
-	public void onPlayerDeath();
-	public void statusChanged();
+	public void hasMoved(); //Methode declenchee lorsque le joueur s'est deplacee
+	public void onPlayerDeath(); //Methode declenchee lorsque le joueur meurt
+	public void statusChanged(); //Methode declenchee lorsque le statut du joueur change
 
 }

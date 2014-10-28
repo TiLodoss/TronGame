@@ -18,15 +18,14 @@ public abstract class GameEntity {
 	protected int score; //score du joueur ou de l'ia
 	protected int status; //statut (vivant ou mort)
 	protected int posX, posY; // position du joueur ou de l'ia
-	protected int currentDirection;
+	protected int currentDirection; //direction courante de l'entite
 	
 	protected ArrayList<Tile> tiles; //ensemble des tuiles appartenant a l'entite
 	protected Tile currentTile; //tuile ou se trouve actuellement l'entite
 	
 	//Methodes abstraites
 	public abstract boolean move(GameEntity entity, int direction); //deplacement dans une direction
-	public abstract boolean move(GameEntity entity); //deplacement dans une direction
-	public abstract boolean collides(); //detection de collision
+	public abstract boolean move(GameEntity entity); //deplacement
 	
 	/**
 	 * Constructeur de GameEntity
